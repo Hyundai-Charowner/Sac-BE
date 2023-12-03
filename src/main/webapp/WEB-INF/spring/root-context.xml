@@ -10,7 +10,7 @@
     <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
         <property name="driverClassName" value="${driverClassName}" />
         <property name="jdbcUrl" value="${jdbcURL}" />
-        <property name="username" value="${userName}" />
+        <property name="username" value="${oracleId}" />
         <property name="password" value="${password}" />
     </bean>
 
