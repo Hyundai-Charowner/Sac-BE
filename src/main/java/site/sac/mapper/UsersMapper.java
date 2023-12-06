@@ -1,12 +1,8 @@
 package site.sac.mapper;
 
-import site.sac.user.Users;
+import site.sac.dto.UsersDTO;
 
 public interface UsersMapper {
-
-    public void insert(Users users);
-
-    public void login(Users users);
-    public int delete(Users users);
-
+    void insert(UsersDTO users);
+    Long select(String user_email);
 }
