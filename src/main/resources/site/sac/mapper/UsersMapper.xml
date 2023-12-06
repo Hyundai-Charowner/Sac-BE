@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.sac.mapper.UsersMapper">
+    <insert id="insert"> <!-- 테이블 설정하고 진행-->
+        insert into sac_users (user_id, user_name, user_image, user_email)
+        values (seq_users.nextval, #{user_name}, #{user_image}, #{user_email})
+    </insert>
+</mapper>
