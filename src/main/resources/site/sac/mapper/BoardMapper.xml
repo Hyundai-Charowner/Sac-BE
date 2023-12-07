@@ -8,6 +8,7 @@
         VALUES (#{board_category})
     </insert>
 
+
     <select id="readAll" resultType="site.sac.mapper.BoardMapper">
         SELECT * FROM SAC_BOARD
     </select>
