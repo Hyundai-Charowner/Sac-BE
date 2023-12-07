@@ -29,7 +29,7 @@ public class UsersServiceImpl implements UsersService {
 
         if (isExistToken(token) == false) {
             registerUser(payload);
-            registerToken(token, usersMapper.select(payload.getEmail()));
+            registerToken(token, usersMapper.select((payload.getEmail())));
         }
 
         return token;
@@ -44,10 +44,10 @@ public class UsersServiceImpl implements UsersService {
         usersMapper.insert(users);
     }
 
-    private void registerToken(String token, Long userID) {
+    private void registerToken(String token, long users_id) {
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setToken(token);
-        tokenDTO.setUser_id(userID);
+        tokenDTO.setUser_id(users_id);
 
         tokenMapper.insert(tokenDTO);
     }
