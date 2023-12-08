@@ -6,31 +6,30 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import site.sac.dto.BoardDTO;
-import site.sac.mapper.BoardMapper;
+import site.sac.dto.UserLikeBoardDTO;
+import site.sac.mapper.UserLikeBoardMapper;
 
 import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({ "file:src/test/resources/root-context.xml" })
 @Slf4j
-public class BoardMapperTest {
+public class UserLikeBoardMapperTest {
     @Autowired
-    BoardMapper boardMapper;
+    UserLikeBoardMapper userLikeBoardMapper;
 
     @Test
     void testInsert(){
-        BoardDTO boardDTO = new BoardDTO();
-        boardDTO.setBoard_category("피구");
-
-        int a = boardMapper.insert(boardDTO);
-        System.out.println(a);
+        UserLikeBoardDTO userLikeBoardDTO = new UserLikeBoardDTO();
+        userLikeBoardDTO.setUser_id(1);
+        userLikeBoardDTO.setBoard_id(3);
+        userLikeBoardMapper.insert(userLikeBoardDTO);
     }
 
     @Test
-    void testReadAll(){
-        List<BoardDTO> list = boardMapper.readAll();
+    void testGetAllByUserId(){
+        List<String> list = userLikeBoardMapper.getAllByUserId(1);
         list.forEach(a->log.info(a.toString()));
-
+        log.info(list.toString());
     }
 }

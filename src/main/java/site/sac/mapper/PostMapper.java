@@ -1,6 +1,7 @@
 package site.sac.mapper;
 
 import site.sac.dto.PostDTO;
+import site.sac.dto.UsersDTO;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface PostMapper {
     public int likeDown(long post_id);
 
     public List<PostDTO> getAllPost();
+
+    public List<PostDTO> getAllPostByUserLikeBoard(List<String> user_like_boards);
 }

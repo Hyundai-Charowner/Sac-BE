@@ -3,29 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.sac.mapper.ReplyMapper">
-    <insert id="insertReply" parameterType="site.sac.mapper.ReplyDTO">
-        INSERT INTO SAC_REPLY (reply_id, board_id, user_id, reply_content)
-        VALUES (#{reply_id}, #{board_id}, #{user_id}, #{reply_content})
+    <insert id="insert">
+        INSERT INTO SAC_REPLY ( post_id, user_id, reply_content)
+        VALUES (#{post_id}, #{user_id}, #{reply_content})
     </insert>
 
-    <select id="getReplyByReplyId" resultType="site.sac.mapper.ReplyDTO">
+    <select id="read" resultType="site.sac.dto.ReplyDTO">
         SELECT * FROM SAC_REPLY WHERE reply_id = #{reply_Id}
     </select>
 
-    <select id="getAllReplyByBoardId" resultType="site.sac.mapper.ReplyDTO">
-        SELECT * FROM SAC_REPLY WHERE board_id = #{board_id}
+    <select id="getAllReplyByPostId" resultType="site.sac.dto.ReplyDTO">
+        SELECT * FROM SAC_REPLY WHERE post_id = #{post_id}
     </select>
 
-    <select id="getAllReplyByUserId" resultType="site.sac.mapper.ReplyDTO">
+    <select id="getAllReplyByUserId" resultType="site.sac.dto.ReplyDTO">
         SELECT * FROM SAC_REPLY WHERE user_id = #{user_id}
     </select>
 
-    <update id="updateReply">
-        UPDATE SAC_REPLY SET reply_content = #{reply_content}, created_date = SYSTIMESTAMP
-        WHERE reply_id = #{reply_id}
-    </update>
-
-    <delete id="deleteReply">
+    <delete id="delete">
         DELETE FROM SAC_REPLY WHERE reply_id = #{reply_Id}
     </delete>
 

@@ -9,7 +9,7 @@
     </insert>
 
 
-    <select id="readAll" resultType="site.sac.mapper.BoardMapper">
+    <select id="readAll" resultType="site.sac.dto.BoardDTO">
         SELECT * FROM SAC_BOARD
     </select>
 
