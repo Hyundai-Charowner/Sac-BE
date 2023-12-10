@@ -26,9 +26,9 @@ jobs:
 
     - name: Docker build and push
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/sac:latest .
-        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} docker.io
-        docker push ${{ secrets.DOCKER_USERNAME }}/sac:latest
+        docker build -t ${{ secrets.DOCKER_USERNAME }}/sac .
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/sac
 
     - name: Deploy
       uses: appleboy/ssh-action@master
@@ -42,8 +42,8 @@ jobs:
           docker rm sac
 
           # Remove the existing image
-          docker rmi ${{ secrets.DOCKER_USERNAME }}/sac:latest
+          docker rmi ${{ secrets.DOCKER_USERNAME }}/sac
 
           # Pull and run the application container
-          docker pull ${{ secrets.DOCKER_USERNAME }}/sac:latest
-          docker run -d --name sac --log-driver=syslog -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/sac:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/sac
+          docker run -d --name sac --log-driver=syslog -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/sac
