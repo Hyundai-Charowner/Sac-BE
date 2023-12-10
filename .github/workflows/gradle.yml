@@ -39,8 +39,7 @@ jobs:
           docker rm my_tomcat
 
           # Pull and run the Tomcat container
-          docker pull tomcat:9.0.82-jdk11-openjdk-slim
-          docker run -d -p 443:8080 --name my_tomcat tomcat:9.0.82-jdk11-openjdk-slim
+          docker run -d -p 8082:8080 --name my_tomcat tomcat:9.0.83-jdk11-corretto
 
           # Pull and run the application container
           docker pull ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest
