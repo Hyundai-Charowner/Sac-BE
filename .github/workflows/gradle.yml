@@ -43,8 +43,10 @@ jobs:
 
           # Remove the existing image
           docker rmi ${{ secrets.DOCKER_USERNAME }}/sac-be
+          
           # Login
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          
           # Pull and run the application container
           docker pull ${{ secrets.DOCKER_USERNAME }}/sac-be
-          docker run -d --name sac-be --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/sac-be
+          docker run -d --name sac-be -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/sac-be
