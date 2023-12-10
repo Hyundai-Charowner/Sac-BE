@@ -34,6 +34,7 @@ jobs:
         username: ubuntu
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker pull ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest
           docker stop $(docker ps -a -q)
           docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest
