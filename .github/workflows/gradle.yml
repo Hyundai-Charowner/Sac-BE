@@ -43,5 +43,5 @@ jobs:
 
           # Pull and run the application container
           docker pull ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest
-          docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest || echo "Error: Unable to start the container"
+          docker run -d --log-driver=syslog -p 80:8081 ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest || echo "Error: Unable to start the container"
           docker rm $(docker ps --filter 'status=exited' -a -q)
