@@ -26,9 +26,9 @@ jobs:
 
     - name: Docker build and push
       run: |
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest .
+        docker build -t ${{ secrets.DOCKER_USERNAME }} .
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker push ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest
+        docker push ${{ secrets.DOCKER_USERNAME }}
 
     - name: Deploy
       uses: appleboy/ssh-action@master
@@ -38,12 +38,11 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
           # Stop and remove the existing container
-          docker stop my_tomcat
-          docker rm my_tomcat
+          docker stop sesac
+          docker rm sesac
 
           # Remove the existing image
-          docker rmi ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest
+          docker rmi ${{ secrets.DOCKER_USERNAME }}
 
           # Pull and run the application container
-          docker pull ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest
-          docker run -d --log-driver=syslog -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest || echo "Error: Unable to start the container"
+          docker run -d --name sesac --log-driver=syslog -p 80:8080 ${{ secrets.DOCKER_USERNAME }}
