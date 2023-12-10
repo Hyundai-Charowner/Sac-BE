@@ -21,7 +21,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
 
-    - name: Docker build
+    - name: Docker build and push
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest .
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
@@ -34,8 +34,15 @@ jobs:
         username: ubuntu
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
+          # Stop and remove the existing container
+          docker stop my_tomcat
+          docker rm my_tomcat
+
+          # Pull and run the Tomcat container
+          docker pull tomcat:9.0.82-jdk11-openjdk-slim
           docker run -d -p 443:8080 --name my_tomcat tomcat:9.0.82-jdk11-openjdk-slim
+
+          # Pull and run the application container
           docker pull ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest
-          docker stop $(docker ps -a -q)
           docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest
           docker rm $(docker ps --filter 'status=exited' -a -q)
