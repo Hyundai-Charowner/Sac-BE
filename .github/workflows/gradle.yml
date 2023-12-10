@@ -45,5 +45,5 @@ jobs:
           docker rmi ${{ secrets.DOCKER_USERNAME }}/sac:latest
 
           # Pull and run the application container
-          docker pull ${{ secrets.DOCKER_USERNAME }}/sac:latest
-          docker run -d --name sac --log-driver=syslog -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/sac:latest
+          docker pull ${{ secrets.DOCKER_USERNAME }}/sac
+          docker run -d --name sac --log-driver=syslog -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/sac
