@@ -38,10 +38,7 @@ jobs:
           docker stop my_tomcat
           docker rm my_tomcat
 
-          # Pull and run the Tomcat container
-          docker run -d -p 80:8080 --name my_tomcat tomcat:9.0.83-jdk11-corretto
-
           # Pull and run the application container
           docker pull ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest
-          docker run -d --log-driver=syslog -p 80:8081 ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest || echo "Error: Unable to start the container"
+          docker run -d --log-driver=syslog -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/your-app-name:latest || echo "Error: Unable to start the container"
           docker rm $(docker ps --filter 'status=exited' -a -q)
