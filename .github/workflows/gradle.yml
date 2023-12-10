@@ -47,4 +47,4 @@ jobs:
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           # Pull and run the application container
           docker pull ${{ secrets.DOCKER_USERNAME }}/sac
-          docker run -d --name sac --log-driver=syslog -p 80:8080 ${{ secrets.DOCKER_USERNAME }}/sac
+          docker run -d --name sac --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/sac
