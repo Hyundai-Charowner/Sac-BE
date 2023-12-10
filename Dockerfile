@@ -1,10 +1,6 @@
-FROM tomcat:9.0.83-jdk11-corretto
-
-# Copy the WAR file into the webapps directory of Tomcat
-COPY build/libs/SAC-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/
-
-# Expose the default Tomcat port
-EXPOSE 8080
-
-# Start Tomcat
-CMD ["catalina.sh", "run"]
+FROM amazoncorretto:11.0.21
+ARG WAR_FILE=build/libs/SAC-1.0-SNAPSHOT.war
+ARG ACTIVE_PROFILE
+COPY ${WAR_FILE} /usr/local/tomcat/webapps
+ENV SPRING_PROFILES_ACTIVE=${ACTIVE_PROFILE}
+ENTRYPOINT ["java","-jar","SAC-1.0-SNAPSHOT.war"]
