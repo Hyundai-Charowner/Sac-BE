@@ -50,4 +50,3 @@ jobs:
           # Pull and run the application container
           docker pull ${{ secrets.DOCKER_USERNAME }}/sac-be
           docker run -d --name sac-be -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/sac-be
-          docker exec sac-be mv /usr/local/tomcat/webapps/SAC-1.0-SNAPSHOT/* /usr/local/tomcat/webapps/
