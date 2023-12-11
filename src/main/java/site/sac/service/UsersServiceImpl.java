@@ -1,6 +1,7 @@
 package site.sac.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import site.sac.mapper.TokenMapper;
 import site.sac.mapper.UsersMapper;
 
 import java.util.Base64;
-
+@Slf4j
 @Service
 public class UsersServiceImpl implements UsersService {
 
@@ -26,7 +27,7 @@ public class UsersServiceImpl implements UsersService {
     public String register(GoogleOAuthDTO googleOAuthDTO) {
         JWTPayloadDTO payload = getPayload(googleOAuthDTO);
         String token = DigestUtils.sha256Hex(payload.getEmail());
-
+        log.info(token.toString() + " 2번째 접근");
         if (isExistToken(token) == false) {
             registerUser(payload);
             registerToken(token, usersMapper.select((payload.getEmail())));
@@ -54,9 +55,12 @@ public class UsersServiceImpl implements UsersService {
 
     private JWTPayloadDTO getPayload(GoogleOAuthDTO googleOAuth) {
         String[] chunks = googleOAuth.getCredential().split("\\.");
+        log.info(chunks.toString());
         Base64.Decoder decoder = Base64.getUrlDecoder();
         String payloadString = new String(decoder.decode(chunks[1]));
 
+        log.info("-0--------------");
+        log.info(payloadString);
         return stringToJSON(payloadString);
     }
 
@@ -72,7 +76,14 @@ public class UsersServiceImpl implements UsersService {
         return payload;
     }
 
-    private boolean isExistToken(String token) {
+    @Override
+    public boolean isExistToken(String token) {
         return tokenMapper.select(token) != null;
+    }
+
+    @Override
+    public long findUserIdByToken(String token) {
+
+        return tokenMapper.select(token).getUser_id();
     }
 }

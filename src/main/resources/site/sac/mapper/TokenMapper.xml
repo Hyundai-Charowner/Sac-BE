@@ -13,4 +13,5 @@
         INSERT INTO SAC_TOKEN (auth_id, user_id, token)
         VALUES (SEQ_USERS.NEXTVAL, #{user_id}, #{token})
     </insert>
+
 </mapper>

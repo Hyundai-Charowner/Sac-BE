@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import site.sac.dto.UserLikePostLikeDTO;
+import site.sac.dto.UserLikePostDTO;
 import site.sac.mapper.UserLikePostMapper;
 
 @ExtendWith(SpringExtension.class)
@@ -18,17 +18,17 @@ public class UserLikePostMapperTest {
 
     @Test
     void testInsert(){
-        UserLikePostLikeDTO userLikePostLikeDTO = new UserLikePostLikeDTO();
-        userLikePostLikeDTO.setPost_id(243);
-        userLikePostLikeDTO.setUser_id(1);
-        userLikePostMapper.insert(userLikePostLikeDTO);
+        UserLikePostDTO userLikePostDTO = new UserLikePostDTO();
+        userLikePostDTO.setPost_id(243);
+        userLikePostDTO.setUser_id(1);
+        userLikePostMapper.insert(userLikePostDTO);
     }
     @Test
     void testDelete(){
-        UserLikePostLikeDTO userLikePostLikeDTO = new UserLikePostLikeDTO();
-        userLikePostLikeDTO.setPost_id(1);
-        userLikePostLikeDTO.setUser_id(1);
-        userLikePostMapper.delete(userLikePostLikeDTO);
+        UserLikePostDTO userLikePostDTO = new UserLikePostDTO();
+        userLikePostDTO.setPost_id(1);
+        userLikePostDTO.setUser_id(1);
+        userLikePostMapper.delete(userLikePostDTO);
     }
 
     @Test
