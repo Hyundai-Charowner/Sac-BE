@@ -1,5 +1,6 @@
 package site.sac.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class PostController {
@@ -79,5 +81,13 @@ public class PostController {
         result.put("posts", posts);
         result.put("count", posts.size());
         return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/posts/test")
+    public ResponseEntity<UsersDTO> testPost(RequestEntity<UsersDTO> users){
+        log.info(users.toString());
+        log.info("--------------");
+        log.info(users.getHeaders().toString());
+        return ResponseEntity.ok().body(users.getBody());
     }
 }
