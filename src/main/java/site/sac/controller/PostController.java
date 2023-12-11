@@ -20,7 +20,7 @@ public class PostController {
     private PostService postService;
 
     @PostMapping("/posts")
-    public String postInsert(PostDTO postDTO){
+    public String postInsert(@RequestBody PostDTO postDTO){
         try {
             postService.register(postDTO);
             return "sucess";
