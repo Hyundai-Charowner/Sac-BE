@@ -47,4 +47,11 @@ public class PostServiceImpl implements PostService{
         return postsByBoardId;
     }
 
+    @Override
+    public List<PostDTO> getAllPostByUserLikeBoard(List<String> userLikeBoards) {
+        List<PostDTO> postsByUserLikeBoard = postMapper.getAllPostByUserLikeBoard(userLikeBoards);
+        postsByUserLikeBoard.forEach(post->log.info("post : " + post.toString()));
+        return postsByUserLikeBoard;
+    }
+
 }
