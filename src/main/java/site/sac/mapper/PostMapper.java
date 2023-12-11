@@ -23,4 +23,6 @@ public interface PostMapper {
     public List<PostDTO> getAllPost();
 
     public List<PostDTO> getAllPostByUserLikeBoard(List<String> user_like_boards);
+
+    public List<PostDTO> getAllPostsByBoardId(Long board_id);
 }

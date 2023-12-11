@@ -54,4 +54,8 @@
         </foreach>
     </select>
 
+    <select id="getPostDetail" resultType="site.sac.dto.PostDTO">
+        select * from SAC_POST WHERE board_id = #{board_id}
+    </select>
+
 </mapper>
