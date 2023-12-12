@@ -8,7 +8,7 @@ import site.sac.service.UsersService;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 public class LogInController {
 
     @Autowired
