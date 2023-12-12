@@ -15,6 +15,7 @@ public class JWTPayloadDTO {
     private String picture;
     private String given_name;
     private String locale;
+    private String family_name;
     private long iat;
     private long exp;
     private String jti;

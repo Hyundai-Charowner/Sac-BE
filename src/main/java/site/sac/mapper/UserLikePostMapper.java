@@ -1,16 +1,15 @@
 package site.sac.mapper;
 
-import site.sac.dto.UserLikeBoardDTO;
-import site.sac.dto.UserLikePostLikeDTO;
+import site.sac.dto.UserLikePostDTO;
 
 import java.util.List;
 
 public interface UserLikePostMapper {
-    public void insert(UserLikePostLikeDTO userLikePostLikeDTO);
+    public void insert(UserLikePostDTO userLikePostDTO);
 
-    public void delete(UserLikePostLikeDTO userLikePostLikeDTO);
+    public void delete(UserLikePostDTO userLikePostDTO);
 
     public int countByPostId(long post_id);
 
-    public List<Integer> getAllByUserId(long user_id);
+    public List<Long> getAllByUserId(long user_id);
 }

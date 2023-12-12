@@ -54,4 +54,15 @@ public class PostServiceImpl implements PostService{
         return postsByUserLikeBoard;
     }
 
+    @Override
+    public PostDTO postEdit(PostDTO postDTO) {
+        postMapper.update(postDTO);
+        return postDTO;
+    }
+
+    @Override
+    public void delete(Long postId) {
+        postMapper.delete(postId);
+    }
+
 }

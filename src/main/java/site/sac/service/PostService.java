@@ -14,4 +14,8 @@ public interface PostService {
     public List<PostDTO> getPostsByBoardId(Long boardId);
 
     public List<PostDTO> getAllPostByUserLikeBoard(List<String> userLikeBoards);
+
+    public PostDTO postEdit(PostDTO postDTO);
+
+    public void delete(Long postId);
 }
