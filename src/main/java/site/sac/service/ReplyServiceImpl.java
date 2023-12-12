@@ -22,8 +22,8 @@ public class ReplyServiceImpl implements ReplyService{
 
     @Override
     public ReplyDTO replyRead(long replyId) {
-        replyMapper.read(replyId);
-        return null;
+
+        return replyMapper.read(replyId);
     }
 
     @Override
@@ -34,5 +34,11 @@ public class ReplyServiceImpl implements ReplyService{
     @Override
     public List<ReplyDTO> getAllReplyByUserId(long userId) {
         return replyMapper.getAllReplyByUserId(userId);
+    }
+
+    @Override
+    public ReplyDTO replyUpdate(ReplyDTO replyDTO) {
+
+        return replyMapper.update(replyDTO);
     }
 }

@@ -14,4 +14,6 @@ public interface ReplyService {
     public List<ReplyDTO> getAllReplyByPostId(long postId);
 
     public List<ReplyDTO> getAllReplyByUserId(long postId);
+
+    public ReplyDTO replyUpdate(ReplyDTO replyDTO);
 }
