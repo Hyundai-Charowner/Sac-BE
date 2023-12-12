@@ -1,6 +1,7 @@
 package site.sac.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -61,13 +62,9 @@ public class UserLikePostController {
 
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
-        log.info(requestEntity.toString());
         try{
             List<Long> list = userLikePostService.getPostsByUserId(userId);
-            List<PostDTO> posts = new ArrayList<>();
-            log.info(list.toString());
-            list.forEach(postId -> { posts.add(postService.getPostDetail(postId));
-            });
+            List<PostDTO> posts = postService.getPostsByLike(list);
 
             Map<String,Object> result = new HashMap<>();
             result.put("posts", posts);

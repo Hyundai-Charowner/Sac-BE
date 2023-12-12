@@ -18,4 +18,6 @@ public interface PostService {
     public PostDTO postEdit(PostDTO postDTO);
 
     public void delete(Long postId);
+
+    public List<PostDTO> getPostsByLike(List<Long> likes);
 }

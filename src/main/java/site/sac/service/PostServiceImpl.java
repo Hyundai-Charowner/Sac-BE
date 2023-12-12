@@ -34,8 +34,6 @@ public class PostServiceImpl implements PostService{
     @Override
     public PostDTO getPostDetail(Long postId) {
         PostDTO post = postMapper.read(postId);
-
-        log.info(post.toString());
         return post;
     }
 
@@ -63,6 +61,12 @@ public class PostServiceImpl implements PostService{
     @Override
     public void delete(Long postId) {
         postMapper.delete(postId);
+    }
+
+    @Override
+    public List<PostDTO> getPostsByLike(List<Long> likes) {
+
+        return postMapper.getPostsByLike(likes);
     }
 
 }
