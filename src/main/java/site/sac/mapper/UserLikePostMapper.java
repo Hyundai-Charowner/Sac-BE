@@ -11,5 +11,5 @@ public interface UserLikePostMapper {
 
     public int countByPostId(long post_id);
 
-    public List<Integer> getAllByUserId(long user_id);
+    public List<Long> getAllByUserId(long user_id);
 }

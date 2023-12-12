@@ -33,7 +33,8 @@ public class PostController {
 
     @PostMapping("/posts")
     public ResponseEntity<String> postInsert(RequestEntity<PostDTO> postDTO){
-        String accessToken = postDTO.getHeaders().getFirst("accessToken");
+        log.info(postDTO.toString());
+        String accessToken = postDTO.getHeaders().getFirst("Coo");
         if(accessToken !=null && usersService.isExistToken(accessToken)){
             postDTO.getBody().setUser_id(usersService.findUserIdByToken(accessToken));
             postService.register(postDTO.getBody());
@@ -63,10 +64,14 @@ public class PostController {
         else return ResponseEntity.status(500).body(null);
 
     }
-    @GetMapping("/posts/{boardId}")
-    public ResponseEntity<Map<String,Object>> getAllPostByBoardId(RequestEntity<PostDTO> postDTO, @PathVariable Long boardId){
+    @GetMapping("/post/{boardId}")
+    public ResponseEntity<Map<String,Object>> getAllPostByBoardId(RequestEntity<String> requestEntity, @PathVariable Long boardId){
+        log.info(requestEntity.toString());
+        log.info(boardId.toString());
         List<PostDTO> posts = postService.getPostsByBoardId(boardId);
-        String accessToken = postDTO.getHeaders().getFirst("accessToken");
+        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
+        log.info(accessToken);
+        log.info(posts.toString());
         if (posts==null){
             return ResponseEntity.status(500).body(null);
         }
@@ -76,23 +81,25 @@ public class PostController {
             result.put("count", posts.size());
             return ResponseEntity.ok().body(result);
         }
-        else return ResponseEntity.status(500).body(null);
+        return ResponseEntity.status(500).body(null);
     }
 
-    @GetMapping("/posts/like")
+    @GetMapping("/posts/like") //수정 필요
     public ResponseEntity<Map<String,Object>> getAllPostByUserId(RequestEntity<String> requestEntity){
+
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
-        List<String> userLikeBoard = userLikeBoardService.getAllByUserId(userId);
-        List<PostDTO> posts = postService.getAllPostByUserLikeBoard(userLikeBoard);
-
-        if (userLikeBoard==null){
-            return ResponseEntity.notFound().build();
+        try{
+            List<String> userLikeBoard = userLikeBoardService.getAllByUserId(userId);
+            List<PostDTO> posts = postService.getAllPostByUserLikeBoard(userLikeBoard);
+            Map<String,Object> result = new HashMap<>();
+            result.put("posts", posts);
+            result.put("count", posts.size());
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e){
+            return ResponseEntity.status(500).body(null);
         }
-        Map<String,Object> result = new HashMap<>();
-        result.put("posts", posts);
-        result.put("count", posts.size());
-        return ResponseEntity.ok().body(result);
+
     }
 
     @PostMapping("/posts/test")
