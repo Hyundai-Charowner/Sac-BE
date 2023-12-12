@@ -14,5 +14,5 @@ public interface ReplyMapper {
 
     public void delete(long reply_Id);
 
-    public ReplyDTO update(ReplyDTO replyDTO);
+    public void update(ReplyDTO replyDTO);
 }

@@ -1,5 +1,6 @@
 package site.sac.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Slf4j
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/posts/like")
 public class UserLikePostController {
     @Autowired
     private UserLikePostService userLikePostService;
@@ -28,43 +29,44 @@ public class UserLikePostController {
     private PostService postService;
 
     @PostMapping("/{postId}")
-    public ResponseEntity<UserLikePostDTO> postLike(RequestEntity<UserLikePostDTO> userLikePostDTO, @PathVariable Long postId){
-        String accessToken = userLikePostDTO.getHeaders().getFirst("accessToken");
+    public ResponseEntity<UserLikePostDTO> postLike(RequestEntity<UserLikePostDTO> requestEntity, @PathVariable Long postId){
+        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
-
+        log.info(requestEntity.toString());
         if(accessToken !=null && usersService.isExistToken(accessToken)){
-            userLikePostDTO.getBody().setUser_id(userId);
-            userLikePostService.postLike(userLikePostDTO.getBody());
-            return ResponseEntity.ok().body(userLikePostDTO.getBody());
+            requestEntity.getBody().setUser_id(userId);
+            userLikePostService.postLike(requestEntity.getBody());
+            return ResponseEntity.ok().body(requestEntity.getBody());
         }
         return ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/{postId}")
-    public ResponseEntity<UserLikePostDTO> postLikeDelete(RequestEntity<UserLikePostDTO> userLikePostDTO, @PathVariable Long postId){
-        String accessToken = userLikePostDTO.getHeaders().getFirst("accessToken");
+    @DeleteMapping("")
+    public ResponseEntity<UserLikePostDTO> postLikeDelete(RequestEntity<UserLikePostDTO> requestEntity){
+        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
 
         if(accessToken !=null && usersService.isExistToken(accessToken)){
-            userLikePostDTO.getBody().setUser_id(userId);
-            userLikePostService.postDelete(userLikePostDTO.getBody());
-            return ResponseEntity.ok().body(userLikePostDTO.getBody());
+            requestEntity.getBody().setUser_id(userId);
+            userLikePostService.postDelete(requestEntity.getBody());
+            log.info(requestEntity.toString());
+            return ResponseEntity.ok().body(requestEntity.getBody());
         }
         return ResponseEntity.notFound().build();
     }
 
 
-    @PostMapping("/") //수정 필요
+    @PostMapping("") //수정 필요
     public ResponseEntity<Map<String,Object>> getUserLikePosts(RequestEntity<String> requestEntity){
 
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
+        log.info(requestEntity.toString());
         try{
             List<Long> list = userLikePostService.getPostsByUserId(userId);
             List<PostDTO> posts = new ArrayList<>();
-            list.forEach(postId -> {
-                PostDTO postDTO = postService.getPostDetail(postId);
-                posts.add(postDTO);
+            log.info(list.toString());
+            list.forEach(postId -> { posts.add(postService.getPostDetail(postId));
             });
 
             Map<String,Object> result = new HashMap<>();
@@ -73,9 +75,8 @@ public class UserLikePostController {
 
             return ResponseEntity.ok().body(result);
         } catch (Exception e){
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(500).body(null);}
         }
 
     }
 
-}

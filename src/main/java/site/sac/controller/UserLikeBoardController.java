@@ -42,8 +42,8 @@ public class UserLikeBoardController {
         }
         return ResponseEntity.status(500).body(null);
     }
-    @PostMapping("/user/boards/{boardId}")
-    public ResponseEntity<String> insertLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity, @PathVariable Long boardId){
+    @PostMapping("/user/boards")
+    public ResponseEntity<String> insertLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity){
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
 
@@ -51,7 +51,7 @@ public class UserLikeBoardController {
             requestEntity.getBody().setUser_id(userId);
             UserLikeBoardDTO dto = requestEntity.getBody();
             userLikeBoardService.insert(dto);
-            return ResponseEntity.ok().body("board 추가 성공");
+            return ResponseEntity.ok().body("board add : success");
         }
 
         return ResponseEntity.notFound().build();

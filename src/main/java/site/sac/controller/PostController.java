@@ -34,7 +34,7 @@ public class PostController {
     @PostMapping("/posts")
     public ResponseEntity<String> postInsert(RequestEntity<PostDTO> postDTO){
         log.info(postDTO.toString());
-        String accessToken = postDTO.getHeaders().getFirst("Coo");
+        String accessToken = postDTO.getHeaders().getFirst("accessToken");
         if(accessToken !=null && usersService.isExistToken(accessToken)){
             postDTO.getBody().setUser_id(usersService.findUserIdByToken(accessToken));
             postService.register(postDTO.getBody());
@@ -111,13 +111,14 @@ public class PostController {
     }
 
     @PutMapping("/posts/{postId}")
-    public ResponseEntity<PostDTO> postEdit(RequestEntity<PostDTO> postDTO, @PathVariable Long postId){
-        String accessToken = postDTO.getHeaders().getFirst("accessToken");
+    public ResponseEntity<PostDTO> postEdit(RequestEntity<PostDTO> requestEntity, @PathVariable Long postId){
+        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
 
         if(accessToken !=null && usersService.isExistToken(accessToken)){
             if (postService.getPostDetail(postId).user_id == userId){
-                PostDTO post = postService.postEdit(postDTO.getBody());
+                requestEntity.getBody().setPost_id(postId);
+                PostDTO post = postService.postEdit(requestEntity.getBody());
                 return ResponseEntity.ok().body(post);
             } else return ResponseEntity.notFound().build();
         }

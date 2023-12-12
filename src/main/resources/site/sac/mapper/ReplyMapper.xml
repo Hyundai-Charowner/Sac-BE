@@ -25,8 +25,7 @@
     </delete>
     <update id="update">
         update SAC_REPLY
-        set reply_content=#{reply_content},
-            updated_date=SYSTIMESTAMP
+        set reply_content=#{reply_content}
         where reply_id=#{reply_id}
     </update>
 </mapper>
