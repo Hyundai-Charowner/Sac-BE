@@ -8,4 +8,5 @@ public class UsersDTO {
     private String user_name;
     private String user_image;
     private String user_email;
+//    private long auth_id;
 }

@@ -4,13 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.sac.mapper.UsersMapper">
     <insert id="insert">
-        INSERT INTO SAC_USERS (user_id, user_name, user_image, user_email)
-        VALUES (SEQ_USERS.NEXTVAL, #{user_name}, #{user_image}, #{user_email})
+        INSERT INTO SAC_USERS (user_name, user_image, user_email)
+        VALUES (#{user_name}, #{user_image}, #{user_email})
     </insert>
 
     <select id="select" resultType="Long">
         SElECT user_id
         FROM SAC_USERS
         WHERE user_email = #{user_email}
+    </select>
+    <select id="usersByEmail" resultType="site.sac.dto.UsersDTO">
+        select * from SAC_USERS
+        where user_email = #{user_email}
     </select>
 </mapper>
