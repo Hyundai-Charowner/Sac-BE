@@ -1,6 +1,7 @@
 package site.sac.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.sac.dto.GoogleOAuthDTO;
@@ -8,7 +9,6 @@ import site.sac.service.UsersService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequestMapping("/login")
 public class LogInController {
@@ -18,15 +18,11 @@ public class LogInController {
 
     @PostMapping("/google")
     public ResponseEntity<String> googleLogin(@RequestBody GoogleOAuthDTO googleOAuth, HttpServletResponse response) {
-        try {
-            String token = usersService.register(googleOAuth);
-            Cookie cookie = new Cookie("accessToken", token);
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
-
-            return ResponseEntity.status(200).body(token);
+         try{
+            return ResponseEntity.status(HttpStatus.OK).body(usersService.register(googleOAuth));
         } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

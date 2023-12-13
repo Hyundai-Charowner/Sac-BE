@@ -16,9 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 public class PostController {
     @Autowired
     private PostService postService;
@@ -29,17 +28,14 @@ public class PostController {
 
     @PostMapping("/posts")
     public ResponseEntity<String> postInsert(RequestEntity<PostDTO> postDTO){
-        log.info(postDTO.toString());
-        String accessToken = postDTO.getHeaders().getFirst("accessToken");
-        if(accessToken !=null && usersService.isExistToken(accessToken)){
-            postDTO.getBody().setUser_id(usersService.findUserIdByToken(accessToken));
+        try{
             postService.register(postDTO.getBody());
-            return ResponseEntity.status(200).build();
-        }
-        else return ResponseEntity.status(500).build();
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();}
+
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/posts") // 로그인 처리X
     public ResponseEntity<Map<String,Object>> getAllPost(){
         try {
             List<PostDTO> posts = postService.getAllPost();
@@ -49,82 +45,61 @@ public class PostController {
             result.put("count", posts.size());
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
-            return ResponseEntity.status(500).build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
     }
 
     @GetMapping("/posts/{postId}")
     public ResponseEntity<PostDTO> getPostDetail(RequestEntity<String> requestEntity, @PathVariable Long postId){
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-
-        if(accessToken !=null && usersService.isExistToken(accessToken)){
-            PostDTO postDetail = postService.getPostDetail(postId);
-            return new ResponseEntity<>(postDetail, HttpStatus.OK);
-        }
-        else return ResponseEntity.status(500).body(null);
+        try{PostDTO postDetail = postService.getPostDetail(postId);
+            return new ResponseEntity<>(postDetail, HttpStatus.OK);}
+        catch (Exception e)
+        {return ResponseEntity.status(500).body(null);}
 
     }
     @GetMapping("/post/{boardId}")
     public ResponseEntity<Map<String,Object>> getAllPostByBoardId(RequestEntity<String> requestEntity, @PathVariable Long boardId){
-        List<PostDTO> posts = postService.getPostsByBoardId(boardId);
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
+        try {
+            Map<String, Object> result= postService.getPostsByBoardId(boardId);
 
-        if (posts==null){
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        } catch (Exception e){
+            return ResponseEntity.status(500).build();
         }
-        if(accessToken !=null && usersService.isExistToken(accessToken)){
-            Map<String,Object> result = new HashMap<>();
-            result.put("posts", posts);
-            result.put("count", posts.size());
-            return ResponseEntity.ok().body(result);
-        }
-        return ResponseEntity.status(500).body(null);
+
     }
 
     @GetMapping("/posts/like") //수정 필요
-    public ResponseEntity<Map<String,Object>> getAllPostByUserId(RequestEntity<String> requestEntity){
-
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
+    public ResponseEntity<Map<String,Object>> getLikePostByUserId(RequestEntity<String> requestEntity){
         try{
-            List<String> userLikeBoard = userLikeBoardService.getAllByUserId(userId);
-            List<PostDTO> posts = postService.getAllPostByUserLikeBoard(userLikeBoard);
-            Map<String,Object> result = new HashMap<>();
-            result.put("posts", posts);
-            result.put("count", posts.size());
-            return ResponseEntity.ok().body(result);
+            Map<String,Object> result = postService.getAllPostByUserId(Long.parseLong(requestEntity.getBody()));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e){
-            return ResponseEntity.status(500).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
     }
 
     @PutMapping("/posts/{postId}")
     public ResponseEntity<PostDTO> postEdit(RequestEntity<PostDTO> requestEntity, @PathVariable Long postId){
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
-
-        if(accessToken !=null && usersService.isExistToken(accessToken)){
-            if (postService.getPostDetail(postId).user_id == userId){
-                requestEntity.getBody().setPost_id(postId);
-                PostDTO post = postService.postEdit(requestEntity.getBody());
-                return ResponseEntity.status(200).body(post);
-            } else return ResponseEntity.status(500).build();
+        try {
+            postService.postEdit(requestEntity.getBody());
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(500).build();
+
+
     }
     @DeleteMapping("/posts/{postId}")
-    public ResponseEntity<PostDTO> postDelete(RequestEntity<PostDTO> postDTO, @PathVariable Long postId){
-        String accessToken = postDTO.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
-
-        if(accessToken !=null && usersService.isExistToken(accessToken)){
-            if (postService.getPostDetail(postId).user_id == userId){
-                postService.delete(postId);
-                return ResponseEntity.ok().body(null);
-            } else return ResponseEntity.notFound().build();
+    public ResponseEntity<PostDTO> postDelete(RequestEntity<PostDTO> requestEntity, @PathVariable Long postId){
+        try {
+            postService.delete(requestEntity.getBody(), postId);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.notFound().build();
-    }
+}
+
 }

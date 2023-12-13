@@ -27,7 +27,6 @@ public class UsersServiceImpl implements UsersService {
     public String register(GoogleOAuthDTO googleOAuthDTO) {
         JWTPayloadDTO payload = getPayload(googleOAuthDTO);
         String token = DigestUtils.sha256Hex(payload.getEmail());
-        log.info(token.toString() + " 2번째 접근");
         if (isExistToken(token) == false) {
             registerUser(payload);
             registerToken(token, usersMapper.select((payload.getEmail())));

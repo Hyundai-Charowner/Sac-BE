@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 @Slf4j
 @RestController
-@RequestMapping("/api/posts/like")
+@RequestMapping("/posts/like")
 public class UserLikePostController {
     @Autowired
     private UserLikePostService userLikePostService;

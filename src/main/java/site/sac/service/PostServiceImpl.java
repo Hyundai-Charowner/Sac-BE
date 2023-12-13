@@ -4,11 +4,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 import site.sac.dto.PostDTO;
 import site.sac.mapper.PostMapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -16,10 +17,12 @@ public class PostServiceImpl implements PostService{
     @Autowired
     private PostMapper postMapper;
 
+    @Autowired
+    private UserLikeBoardService userLikeBoardService;
+
     @Transactional
     @Override
     public void register(PostDTO postDTO) {
-        log.info("Post : " + postDTO.toString());
         postMapper.insert(postDTO);
     }
 
@@ -38,11 +41,29 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<PostDTO> getPostsByBoardId(Long boardId) {
+    public Map<String,Object> getPostsByBoardId(Long boardId){
         List<PostDTO> postsByBoardId = postMapper.getAllPostsByBoardId(boardId);
-        postsByBoardId.forEach(post->log.info("post : " + post.toString()));
+        if (postsByBoardId == null){
+            throw new NullPointerException();
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("posts", postsByBoardId);
+        result.put("count", postsByBoardId.size());
 
-        return postsByBoardId;
+        return result;
+    }
+    @Override
+    public Map<String,Object> getAllPostByUserId(Long userId){
+        List<String> userLikeBoard = userLikeBoardService.getAllByUserId(userId);
+        if (userLikeBoard == null){
+            throw new NullPointerException();
+        }
+        List<PostDTO> posts = postMapper.getAllPostByUserLikeBoard(userLikeBoard);
+        Map<String,Object> result = new HashMap<>();
+        result.put("posts", posts);
+        result.put("count", posts.size());
+        return result;
+
     }
 
     @Override
@@ -53,13 +74,18 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public PostDTO postEdit(PostDTO postDTO) {
+    public void postEdit(PostDTO postDTO) {
+        if(postMapper.read(postDTO.getPost_id()).getUser_id()== postDTO.getUser_id()){
+            throw new NullPointerException();
+        }
         postMapper.update(postDTO);
-        return postDTO;
     }
 
     @Override
-    public void delete(Long postId) {
+    public void delete(PostDTO postDTO, long postId) {
+        if(postMapper.read(postId).getUser_id()== postDTO.getUser_id()){
+            throw new NullPointerException();
+        }
         postMapper.delete(postId);
     }
 

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 @Slf4j
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/posts")
 public class ReplyController {
     @Autowired
     private ReplyService replyService;
@@ -23,10 +23,6 @@ public class ReplyController {
 
     @GetMapping("/replies/{postId}")
     public ResponseEntity<Map<String,Object>> getAllRepliesByPostId(RequestEntity<String> requestEntity, @PathVariable long postId){
-
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-
-        if(accessToken !=null && usersService.isExistToken(accessToken)) {
             try {
                 List<ReplyDTO> replies = replyService.getAllReplyByPostId(postId);
                 Map<String, Object> result = new HashMap<>();
@@ -36,8 +32,6 @@ public class ReplyController {
             } catch (Exception e) {
                 return ResponseEntity.status(500).build();
             }
-        }
-        return ResponseEntity.status(500).build();
     }
 
     @PostMapping("/reply/{postId}")
