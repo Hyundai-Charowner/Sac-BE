@@ -8,9 +8,9 @@ import site.sac.service.UsersService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-@CrossOrigin(origins = "*")
+
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 public class LogInController {
 
     @Autowired
