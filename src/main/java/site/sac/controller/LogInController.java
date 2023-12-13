@@ -10,7 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/login")
 public class LogInController {
 
     @Autowired
