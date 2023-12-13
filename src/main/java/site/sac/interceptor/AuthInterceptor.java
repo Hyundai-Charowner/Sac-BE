@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import site.sac.service.UsersService;
 
-import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,8 +17,9 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("accessToken");
 
-        if (!usersService.isExistToken(token)){
-            throw new AuthenticationException();
+        if (token == null || !usersService.isExistToken(token)){
+            response.setStatus(401);
+            return false;
         }
 
         return true;
