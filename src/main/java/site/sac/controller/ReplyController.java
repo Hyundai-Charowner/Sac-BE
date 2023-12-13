@@ -2,6 +2,7 @@ package site.sac.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,7 @@ public class ReplyController {
     @GetMapping("/replies/{postId}")
     public ResponseEntity<Map<String,Object>> getAllRepliesByPostId(RequestEntity<String> requestEntity, @PathVariable long postId){
             try {
-                List<ReplyDTO> replies = replyService.getAllReplyByPostId(postId);
-                Map<String, Object> result = new HashMap<>();
-                result.put("replies", replies);
-                result.put("count", replies.size());
+                Map<String, Object> result = replyService.getAllReplyByPostId(postId);
                 return ResponseEntity.ok().body(result);
             } catch (Exception e) {
                 return ResponseEntity.status(500).build();
@@ -36,48 +34,32 @@ public class ReplyController {
 
     @PostMapping("/reply/{postId}")
     public ResponseEntity<String> replyInesrt(RequestEntity<ReplyDTO> requestEntity, @PathVariable long postId){
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
-        if(accessToken !=null && usersService.isExistToken(accessToken)) {
             try{
-                requestEntity.getBody().setUser_id(userId);
                 requestEntity.getBody().setPost_id(postId);
                 replyService.replyInsert(requestEntity.getBody());
                 return ResponseEntity.status(200).build();
             } catch (Exception e){return ResponseEntity.status(500).build();}
 
-        }
-        return ResponseEntity.status(500).build();
-
     }
 
     @PutMapping("/reply/{replyId}")
-    public ResponseEntity<ReplyDTO> replyEdit(RequestEntity<ReplyDTO> requestEntity, @PathVariable long replyId){
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
+    public ResponseEntity<ReplyDTO> replyUpdate(RequestEntity<ReplyDTO> requestEntity, @PathVariable long replyId){
+            replyService.replyUpdate(requestEntity.getBody(), replyId);
+            return ResponseEntity.status(200).body(requestEntity.getBody());
 
-        if(accessToken !=null && usersService.isExistToken(accessToken)) {
-            if (replyService.replyRead(replyId).getUser_id() == userId){
-
-                requestEntity.getBody().setReply_id(replyId);
-                replyService.replyUpdate(requestEntity.getBody());
-                return ResponseEntity.status(200).body(requestEntity.getBody());
-        }
-    }
-        return ResponseEntity.status(500).body(requestEntity.getBody());
     }
 
     @DeleteMapping("/reply/{replyId}")
-    public ResponseEntity<String> replyDelete(RequestEntity<Long> requestEntity, @PathVariable long replyId){
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
-        if(accessToken !=null && usersService.isExistToken(accessToken)) {
-            if (replyService.replyRead(replyId).getUser_id() == userId){
-                replyService.replyDelete(replyId);
-                return ResponseEntity.ok().body(requestEntity.getBody() +" num, reply delete");
-            }
+    public ResponseEntity<String> replyDelete(RequestEntity<ReplyDTO> requestEntity, @PathVariable long replyId){
+        try{
+            replyService.replyDelete(requestEntity.getBody(), replyId);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(500).body("reply delete : fail");
+
+
+
 
     }
 

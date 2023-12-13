@@ -3,10 +3,14 @@ package site.sac.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import site.sac.dto.PostDTO;
 import site.sac.dto.UserLikePostDTO;
+import site.sac.mapper.PostMapper;
 import site.sac.mapper.UserLikePostMapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -14,6 +18,8 @@ import java.util.List;
 public class UserLikePostServiceImpl implements UserLikePostService{
     @Autowired
     private UserLikePostMapper userLikePostMapper;
+    @Autowired
+    private PostMapper postMapper;
 
     @Override
     public void postLike(UserLikePostDTO userLikePostDTO) {
@@ -31,7 +37,14 @@ public class UserLikePostServiceImpl implements UserLikePostService{
     }
 
     @Override
-    public List<Long> getPostsByUserId(long userId) {
-        return userLikePostMapper.getAllByUserId(userId);
+    public Map<String,Object> getPostsByUserId(long userId) {
+        List<Long> list = userLikePostMapper.getAllByUserId(userId);
+        List<PostDTO> posts = postMapper.getPostsByLike(list);
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("posts", posts);
+        result.put("count", posts.size());
+
+        return result;
     }
 }

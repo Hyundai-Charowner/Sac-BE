@@ -11,8 +11,6 @@ import site.sac.service.PostService;
 import site.sac.service.UserLikeBoardService;
 import site.sac.service.UsersService;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -38,11 +36,7 @@ public class PostController {
     @GetMapping("/posts") // 로그인 처리X
     public ResponseEntity<Map<String,Object>> getAllPost(){
         try {
-            List<PostDTO> posts = postService.getAllPost();
-            Map<String,Object> result = new HashMap<>();
-
-            result.put("posts", posts);
-            result.put("count", posts.size());
+            Map<String,Object> result= postService.getAllPost();
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

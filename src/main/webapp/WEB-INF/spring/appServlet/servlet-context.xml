@@ -20,6 +20,7 @@
     <mvc:interceptors>
         <interceptor>
             <mapping path="/**"/>
+            <exclude-mapping path="/login/**"/>
             <beans:bean class="site.sac.interceptor.AuthInterceptor"/>
         </interceptor>
     </mvc:interceptors>
