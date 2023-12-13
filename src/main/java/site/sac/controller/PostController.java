@@ -18,7 +18,7 @@ import java.util.Map;
 @Slf4j
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/posts")
 public class PostController {
     @Autowired
     private PostService postService;
@@ -27,7 +27,7 @@ public class PostController {
     @Autowired
     private UsersService usersService;
 
-    @PostMapping("/posts")
+    @PostMapping("")
     public ResponseEntity<String> postInsert(RequestEntity<PostDTO> postDTO){
         log.info(postDTO.toString());
         String accessToken = postDTO.getHeaders().getFirst("accessToken");
@@ -39,7 +39,7 @@ public class PostController {
         else return ResponseEntity.status(500).build();
     }
 
-    @GetMapping("/posts")
+    @GetMapping("")
     public ResponseEntity<Map<String,Object>> getAllPost(){
         try {
             List<PostDTO> posts = postService.getAllPost();
@@ -54,7 +54,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/{postId}")
     public ResponseEntity<PostDTO> getPostDetail(RequestEntity<String> requestEntity, @PathVariable Long postId){
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
 
@@ -65,7 +65,7 @@ public class PostController {
         else return ResponseEntity.status(500).body(null);
 
     }
-    @GetMapping("/post/{boardId}")
+    @GetMapping("/{boardId}")
     public ResponseEntity<Map<String,Object>> getAllPostByBoardId(RequestEntity<String> requestEntity, @PathVariable Long boardId){
         List<PostDTO> posts = postService.getPostsByBoardId(boardId);
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
@@ -82,7 +82,7 @@ public class PostController {
         return ResponseEntity.status(500).body(null);
     }
 
-    @GetMapping("/posts/like") //수정 필요
+    @GetMapping("/like") //수정 필요
     public ResponseEntity<Map<String,Object>> getAllPostByUserId(RequestEntity<String> requestEntity){
 
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
@@ -100,7 +100,7 @@ public class PostController {
 
     }
 
-    @PutMapping("/posts/{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<PostDTO> postEdit(RequestEntity<PostDTO> requestEntity, @PathVariable Long postId){
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
@@ -114,7 +114,7 @@ public class PostController {
         }
         return ResponseEntity.status(500).build();
     }
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("/{postId}")
     public ResponseEntity<PostDTO> postDelete(RequestEntity<PostDTO> postDTO, @PathVariable Long postId){
         String accessToken = postDTO.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
