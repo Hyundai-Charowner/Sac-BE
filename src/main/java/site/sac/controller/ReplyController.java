@@ -23,7 +23,7 @@ public class ReplyController {
     @Autowired
     private UsersService usersService;
 
-    @GetMapping("/replies/{postId}") //수정 필요
+    @GetMapping("/replies/{postId}")
     public ResponseEntity<Map<String,Object>> getAllRepliesByPostId(RequestEntity<String> requestEntity, @PathVariable long postId){
 
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
@@ -36,10 +36,10 @@ public class ReplyController {
                 result.put("count", replies.size());
                 return ResponseEntity.ok().body(result);
             } catch (Exception e) {
-                return ResponseEntity.status(500).body(null);
+                return ResponseEntity.status(500).build();
             }
         }
-        return ResponseEntity.status(500).body(null);
+        return ResponseEntity.status(500).build();
     }
 
     @PostMapping("/reply/{postId}")
@@ -50,9 +50,9 @@ public class ReplyController {
             requestEntity.getBody().setUser_id(userId);
             requestEntity.getBody().setPost_id(postId);
             replyService.replyInsert(requestEntity.getBody());
-            return ResponseEntity.ok().body("reply insert : success");
+            return ResponseEntity.status(200).build();
         }
-        return ResponseEntity.status(500).body("reply insert : fail");
+        return ResponseEntity.status(500).build();
 
     }
 
@@ -66,7 +66,7 @@ public class ReplyController {
 
                 requestEntity.getBody().setReply_id(replyId);
                 replyService.replyUpdate(requestEntity.getBody());
-                return ResponseEntity.ok().body(requestEntity.getBody());
+                return ResponseEntity.status(200).body(requestEntity.getBody());
         }
     }
         return ResponseEntity.status(500).body(requestEntity.getBody());

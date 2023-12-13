@@ -10,7 +10,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/login")
 public class LogInController {
 
@@ -27,7 +26,7 @@ public class LogInController {
 
             return ResponseEntity.status(200).body(token);
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("Fail");
+            return ResponseEntity.status(500).build();
         }
     }
 }

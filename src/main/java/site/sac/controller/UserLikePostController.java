@@ -29,20 +29,20 @@ public class UserLikePostController {
     @Autowired
     private PostService postService;
 
-    @PostMapping("/{postId}")
-    public ResponseEntity<UserLikePostDTO> postLike(RequestEntity<UserLikePostDTO> requestEntity, @PathVariable Long postId){
+    @PostMapping("")
+    public ResponseEntity<UserLikePostDTO> postLike(RequestEntity<UserLikePostDTO> requestEntity){
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
         log.info(requestEntity.toString());
         if(accessToken !=null && usersService.isExistToken(accessToken)){
             requestEntity.getBody().setUser_id(userId);
             userLikePostService.postLike(requestEntity.getBody());
-            return ResponseEntity.ok().body(requestEntity.getBody());
+            return ResponseEntity.status(200).body(requestEntity.getBody());
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(500).build();
     }
 
-    @DeleteMapping("")
+    @DeleteMapping
     public ResponseEntity<UserLikePostDTO> postLikeDelete(RequestEntity<UserLikePostDTO> requestEntity){
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
@@ -51,13 +51,13 @@ public class UserLikePostController {
             requestEntity.getBody().setUser_id(userId);
             userLikePostService.postDelete(requestEntity.getBody());
             log.info(requestEntity.toString());
-            return ResponseEntity.ok().body(requestEntity.getBody());
+            return ResponseEntity.status(200).body(requestEntity.getBody());
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(500).build();
     }
 
 
-    @PostMapping("") //수정 필요
+    @GetMapping("/like") //수정 필요
     public ResponseEntity<Map<String,Object>> getUserLikePosts(RequestEntity<String> requestEntity){
 
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
