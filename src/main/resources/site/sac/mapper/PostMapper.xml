@@ -58,4 +58,10 @@
         select * from SAC_POST WHERE board_id = #{board_id}
     </select>
 
+    <select id="getPostsByLike" resultType="site.sac.dto.PostDTO">
+        select * from SAC_POST WHERE post_id IN
+        <foreach item="item" collection="list" index="index"  open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

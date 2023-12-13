@@ -12,4 +12,5 @@ public interface UserLikePostService {
     public int countLikeByPostId(long postId);
 
     public List<Long> getPostsByUserId(long userId);
+
 }

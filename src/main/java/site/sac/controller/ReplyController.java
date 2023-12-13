@@ -1,12 +1,10 @@
 package site.sac.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.sac.dto.PostDTO;
 import site.sac.dto.ReplyDTO;
 import site.sac.service.ReplyService;
 import site.sac.service.UsersService;
@@ -23,11 +21,11 @@ public class ReplyController {
     @Autowired
     private UsersService usersService;
 
-    @GetMapping("/replies/{postId}") //수정 필요
+    @GetMapping("/replies/{postId}")
     public ResponseEntity<Map<String,Object>> getAllRepliesByPostId(RequestEntity<String> requestEntity, @PathVariable long postId){
 
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
+
         if(accessToken !=null && usersService.isExistToken(accessToken)) {
             try {
                 List<ReplyDTO> replies = replyService.getAllReplyByPostId(postId);
@@ -36,10 +34,10 @@ public class ReplyController {
                 result.put("count", replies.size());
                 return ResponseEntity.ok().body(result);
             } catch (Exception e) {
-                return ResponseEntity.status(500).body(null);
+                return ResponseEntity.status(500).build();
             }
         }
-        return ResponseEntity.status(500).body(null);
+        return ResponseEntity.status(500).build();
     }
 
     @PostMapping("/reply/{postId}")
@@ -47,12 +45,15 @@ public class ReplyController {
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
         if(accessToken !=null && usersService.isExistToken(accessToken)) {
-            requestEntity.getBody().setUser_id(userId);
-            requestEntity.getBody().setPost_id(postId);
-            replyService.replyInsert(requestEntity.getBody());
-            return ResponseEntity.ok().body("reply insert : success");
+            try{
+                requestEntity.getBody().setUser_id(userId);
+                requestEntity.getBody().setPost_id(postId);
+                replyService.replyInsert(requestEntity.getBody());
+                return ResponseEntity.status(200).build();
+            } catch (Exception e){return ResponseEntity.status(500).build();}
+
         }
-        return ResponseEntity.status(500).body("reply insert : fail");
+        return ResponseEntity.status(500).build();
 
     }
 
@@ -66,7 +67,7 @@ public class ReplyController {
 
                 requestEntity.getBody().setReply_id(replyId);
                 replyService.replyUpdate(requestEntity.getBody());
-                return ResponseEntity.ok().body(requestEntity.getBody());
+                return ResponseEntity.status(200).body(requestEntity.getBody());
         }
     }
         return ResponseEntity.status(500).body(requestEntity.getBody());
