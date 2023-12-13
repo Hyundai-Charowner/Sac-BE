@@ -1,12 +1,10 @@
 package site.sac.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import site.sac.dto.PostDTO;
 import site.sac.dto.ReplyDTO;
 import site.sac.service.ReplyService;
 import site.sac.service.UsersService;
@@ -27,7 +25,7 @@ public class ReplyController {
     public ResponseEntity<Map<String,Object>> getAllRepliesByPostId(RequestEntity<String> requestEntity, @PathVariable long postId){
 
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
+
         if(accessToken !=null && usersService.isExistToken(accessToken)) {
             try {
                 List<ReplyDTO> replies = replyService.getAllReplyByPostId(postId);
@@ -47,10 +45,13 @@ public class ReplyController {
         String accessToken = requestEntity.getHeaders().getFirst("accessToken");
         long userId = usersService.findUserIdByToken(accessToken);
         if(accessToken !=null && usersService.isExistToken(accessToken)) {
-            requestEntity.getBody().setUser_id(userId);
-            requestEntity.getBody().setPost_id(postId);
-            replyService.replyInsert(requestEntity.getBody());
-            return ResponseEntity.status(200).build();
+            try{
+                requestEntity.getBody().setUser_id(userId);
+                requestEntity.getBody().setPost_id(postId);
+                replyService.replyInsert(requestEntity.getBody());
+                return ResponseEntity.status(200).build();
+            } catch (Exception e){return ResponseEntity.status(500).build();}
+
         }
         return ResponseEntity.status(500).build();
 
