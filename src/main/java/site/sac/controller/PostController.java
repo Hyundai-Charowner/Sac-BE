@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class PostController {
