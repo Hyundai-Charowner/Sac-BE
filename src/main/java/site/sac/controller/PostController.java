@@ -31,7 +31,7 @@ public class PostController {
     }
 
     @PostMapping("/page")
-    public ResponseEntity<Map<String,Object>> getAllPost() throws DataAccessException {
+    public ResponseEntity<Map<String, Object>> getAllPost(@RequestBody Map<String, Long> requestBody) {
         Map<String, Object> result = postResponseService.getPagingPost(requestBody.get("pageNum"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
