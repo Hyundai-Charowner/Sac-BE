@@ -10,6 +10,7 @@ import site.sac.mapper.PostMapper;
 import site.sac.mapper.PostResponseMapper;
 import site.sac.mapper.ReplyResponseMapper;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,10 +45,14 @@ public class PostResponseServiceImpl implements PostResponseService{
     public Map<String,Object> getDetail(long postId) {
         PostResponseDTO post = postResponseMapper.getPostDetail(postId);
         post.setCreated_date(post.getCreated_date().substring(0, 16));
-        List<ReplyResponseDTO> replies = replyResponseMapper.getAllReply(postId).stream().map((reply) -> {
-            reply.setCreated_date(reply.getCreated_date().substring(0, 16));
-            return reply;
-        }).collect(Collectors.toList());
+        List<ReplyResponseDTO> replies = replyResponseMapper.getAllReply(postId)
+                .stream()
+                .sorted(Comparator.comparing(ReplyResponseDTO::getCreated_date).reversed())
+                .map((reply) -> {
+                    reply.setCreated_date(reply.getCreated_date().substring(0, 16));
+                    return reply;
+                })
+                .collect(Collectors.toList());
         log.info(replies.toString());
         postMapper.countUp(postId);
 
