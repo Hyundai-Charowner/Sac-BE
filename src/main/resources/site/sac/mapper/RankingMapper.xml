@@ -11,7 +11,7 @@
             order by count(*) desc) sj left join sac_board sb
             on sj.board_id = sb.board_id
             <![CDATA[
-            where rownum <=5;]]>
+            where rownum <=5]]>
         </select>
 
     <select id="rankPassion" resultType="string">
@@ -22,6 +22,6 @@
              order by count(*) desc) sp left join sac_users su
                  on sp.user_id = su.user_id
             <![CDATA[
-        where rownum <=5;]]>
+        where rownum <=5]]>
     </select>
 </mapper>
