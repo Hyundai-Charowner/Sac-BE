@@ -14,14 +14,14 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping
+@RequestMapping("/posts")
 public class PostController {
     @Autowired
     private PostService postService;
     @Autowired
     private PostResponseService postResponseService;
 
-    @PostMapping("/posts")
+    @PostMapping
     public ResponseEntity<String> postInsert(RequestEntity<PostDTO> postDTO) {
         try {
             postService.register(postDTO.getBody());
@@ -32,20 +32,10 @@ public class PostController {
 
     }
 
-//    @GetMapping("/posts") // 로그인 처리X
-//    public ResponseEntity<Map<String, Object>> getAllPost() {
-//        try {
-//            Map<String, Object> result = postService.getAllPost();
-//            return ResponseEntity.status(HttpStatus.OK).body(result);
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//        }
-//
-//    }
-    @GetMapping("/posts/page/{pageNum}") // 로그인 처리X
-    public ResponseEntity<Map<String, Object>> getAllPost(@PathVariable long pageNum) {
+    @PostMapping("/page")
+    public ResponseEntity<Map<String, Object>> getAllPost(@RequestBody Map<String, Long> requestBody) {
         try {
-            Map<String, Object> result = postResponseService.getPagingPost(pageNum);
+            Map<String, Object> result = postResponseService.getPagingPost(requestBody.get("pageNum"));
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -53,7 +43,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/{postId}")
     public ResponseEntity<PostDTO> getPostDetail(RequestEntity<String> requestEntity, @PathVariable Long postId) {
         try {
             PostDTO postDetail = postService.getPostDetail(postId);
@@ -64,7 +54,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/post/{boardId}")
+    @GetMapping("/{boardId}")
     public ResponseEntity<Map<String, Object>> getAllPostByBoardId(RequestEntity<String> requestEntity, @PathVariable Long boardId) {
         try {
             Map<String, Object> result = postService.getPostsByBoardId(boardId);
@@ -76,7 +66,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/posts/like") //수정 필요
+    @GetMapping("/like")
     public ResponseEntity<Map<String, Object>> getLikePostByUserId(RequestEntity<String> requestEntity) {
         try {
             Map<String, Object> result = postService.getAllPostByUserId(Long.parseLong(requestEntity.getBody()));
@@ -87,7 +77,7 @@ public class PostController {
 
     }
 
-    @PutMapping("/posts/{postId}")
+    @PutMapping("/{postId}")
     public ResponseEntity<PostDTO> postEdit(RequestEntity<PostDTO> requestEntity, @PathVariable Long postId) {
         try {
             postService.postEdit(requestEntity.getBody());
@@ -99,7 +89,7 @@ public class PostController {
 
     }
 
-    @DeleteMapping("/posts/{postId}")
+    @DeleteMapping("/{postId}")
     public ResponseEntity<PostDTO> postDelete(RequestEntity<PostDTO> requestEntity, @PathVariable Long postId) {
         try {
             postService.delete(requestEntity.getBody(), postId);
