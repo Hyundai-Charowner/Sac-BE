@@ -1,5 +1,6 @@
 package site.sac.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.sac.domain.Criteria;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class PostResponseServiceImpl implements PostResponseService{
     @Autowired
@@ -42,12 +44,11 @@ public class PostResponseServiceImpl implements PostResponseService{
     public Map<String,Object> getDetail(long postId) {
         PostResponseDTO post = postResponseMapper.getPostDetail(postId);
         post.setCreated_date(post.getCreated_date().substring(0, 16));
-        post.setUpdated_date(post.getUpdated_date().substring(0, 16));
         List<ReplyResponseDTO> replies = replyResponseMapper.getAllReply(postId).stream().map((reply) -> {
             reply.setCreated_date(reply.getCreated_date().substring(0, 16));
             return reply;
         }).collect(Collectors.toList());
-
+        log.info(replies.toString());
         postMapper.countUp(postId);
 
         Map<String,Object> result = new HashMap<>();
