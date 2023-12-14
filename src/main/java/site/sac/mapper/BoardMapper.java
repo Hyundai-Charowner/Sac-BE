@@ -8,4 +8,5 @@ public interface BoardMapper {
     int insert(BoardDTO boardDTO);
 
     List<BoardDTO> readAll();
+
 }
