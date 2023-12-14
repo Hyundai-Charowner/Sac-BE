@@ -3,7 +3,6 @@ package site.sac.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import site.sac.domain.Criteria;
 import site.sac.dto.ReplyDTO;
 import site.sac.dto.ReplyResponseDTO;
 import site.sac.mapper.ReplyMapper;
@@ -34,14 +33,9 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Map<String, Object> getAllReplyByPostId(long postId) {
-        log.info("----------------");
-        log.info("" + postId);
-        log.info("----------------");
-
-        List<ReplyResponseDTO> replies = replyResponseMapper.getAllReply(new Criteria(), postId);
+        List<ReplyResponseDTO> replies = replyResponseMapper.getAllReply(postId);
         Map<String, Object> result = new HashMap<>();
         result.put("replies", replies);
-
         return result;
     }
 

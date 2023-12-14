@@ -37,9 +37,9 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostDTO> getPostDetail(@PathVariable Long postId) throws DataAccessException {
-        PostDTO postDetail = postService.getPostDetail(postId);
-        return new ResponseEntity<>(postDetail, HttpStatus.OK);
+    public ResponseEntity<Map<String, Object>> getPostDetail(@PathVariable Long postId) throws DataAccessException {
+        Map<String,Object> result = postResponseService.getDetail(postId);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/board/{boardId}")

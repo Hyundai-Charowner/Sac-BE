@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import site.sac.domain.Criteria;
 import site.sac.dto.PostResponseDTO;
+import site.sac.dto.ReplyResponseDTO;
 import site.sac.mapper.PostResponseMapper;
+import site.sac.mapper.ReplyResponseMapper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
 public class PostResponseServiceImpl implements PostResponseService{
     @Autowired
     private PostResponseMapper postResponseMapper;
+    @Autowired
+    private ReplyResponseMapper replyResponseMapper;
     @Override
     public Map<String,Object> getPagingPost(long pageNum) {
         Criteria cri = new Criteria();
@@ -29,4 +33,15 @@ public class PostResponseServiceImpl implements PostResponseService{
         result.put("posts", posts);
         return result;
     }
+
+    @Override
+    public Map<String,Object> getDetail(long postId) {
+        PostResponseDTO post = postResponseMapper.getPostDetail(postId);
+        List<ReplyResponseDTO> reply = replyResponseMapper.getAllReply(postId);
+        Map<String,Object> result = new HashMap<>();
+        result.put("post", post);
+        result.put("reply", reply);
+        return result;
+    }
+
 }
