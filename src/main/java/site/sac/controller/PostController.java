@@ -45,13 +45,13 @@ public class PostController {
 
     @PostMapping("/board")
     public ResponseEntity<Map<String,Object>> getAllPostByBoardId(@RequestBody Map<String, Long> requestBody) throws DataAccessException {
-        Map<String, Object> result= postResponseService.getPagingPostByBoardId(requestBody.get("boardId"), requestBody.get("pageNum"));
+        Map<String, Object> result= postResponseService.getPagingPostByBoardId(requestBody.get("boardId"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/list")
-    public ResponseEntity<Map<String,Object>> getAllPostByUserId(HttpServletRequest request){
-            Map<String,Object> result = postService.getAllPostByUserId((long)request.getAttribute("userId"));
+    @PostMapping("/list")
+    public ResponseEntity<Map<String,Object>> getAllPostByUserId(@RequestBody Map<String, Long> requestBody){
+            Map<String,Object> result = postResponseService.getPagingPostByuserId(requestBody.get("userId"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -63,7 +63,6 @@ public class PostController {
 
     @DeleteMapping
     public ResponseEntity<PostDTO> postDelete(RequestEntity<PostDTO> requestEntity, HttpServletRequest request){
-        log.info(requestEntity.toString());
         postService.delete(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
     }

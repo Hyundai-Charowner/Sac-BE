@@ -10,5 +10,7 @@ public interface PostResponseMapper {
 
     PostResponseDTO getPostDetail(long post_id);
 
-    List<PostResponseDTO> getPostAllByBoardId(Criteria cri, long board_id);
+    List<PostResponseDTO> getPostAllByBoardId(long board_id);
+
+    List<PostResponseDTO> getPostAllByUserId(long page_num, long user_id);
 }

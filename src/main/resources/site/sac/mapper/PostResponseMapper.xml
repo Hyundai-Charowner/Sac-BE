@@ -79,7 +79,6 @@
     ) sr2 left join sac_board sb
                     on sr2.board_id = sb.board_id) result
     </select>
-
     <select id="getPostAllByBoardId" resultType="site.sac.dto.PostResponseDTO">
         SELECT result.post_id,
                result.board_category,
@@ -111,12 +110,10 @@
                                                                         GROUP BY post_id
                                                                     ) sr ON sp.post_id = sr.post_id
                                                                              LEFT JOIN sac_users su ON sp.user_id = su.user_id
-
+                                                                    WHERE sp.board_id = #{board_id}
                                                                     ORDER BY sp.post_id DESC
                                                                 ) sr2 left join sac_board sb
                                                                                 on sr2.board_id = sb.board_id) result
-            WHERE result.board_id = #{board_id}
-
-            AND <![CDATA[ (rn > (#{cri.pageNum} - 1) * #{cri.perPageNum} AND rn <= #{cri.pageNum} * #{cri.perPageNum})]]>
     </select>
+
 </mapper>

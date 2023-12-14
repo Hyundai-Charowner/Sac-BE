@@ -10,5 +10,7 @@ public interface PostResponseService {
 
     PostResponseDTO getDetail(long postId);
 
-    Map<String,Object> getPagingPostByBoardId(long pageNum, long boardId);
+    Map<String,Object> getPagingPostByBoardId(long boardId);
+
+    Map<String,Object> getPagingPostByuserId(long userId);
 }
