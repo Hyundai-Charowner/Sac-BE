@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.sac.dto.ReplyDTO;
 import site.sac.service.ReplyService;
-import site.sac.service.UsersService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -19,8 +18,6 @@ import java.util.Map;
 public class ReplyController {
     @Autowired
     private ReplyService replyService;
-    @Autowired
-    private UsersService usersService;
 
     @GetMapping("/replies/{postId}")
     public ResponseEntity<Map<String,Object>> getAllRepliesByPostId(@PathVariable long postId) throws DataAccessException {

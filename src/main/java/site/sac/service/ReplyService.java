@@ -11,7 +11,7 @@ public interface ReplyService {
 
     ReplyDTO replyRead(long replyId);
 
-    Map<String,Object> getAllReplyByPostId(long postId);
+    Map<String, Object> getAllReplyByPostId(long postId);
 
     Map<String, Object> getAllReplyByUserId(long userId);
 

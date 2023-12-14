@@ -3,9 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.sac.mapper.ReplyResponseMapper">
-    <select id="getAllReply" resultType="site.sac.dto.ReplyResponseDTO">
-        SELECT reply_content, user_id, created_date
-        FROM SAC_REPLY
-        WHERE post_id = #{post_id}
+    <select id="getAllReply"  resultType="site.sac.dto.ReplyResponseDTO">
+        SELECT sr.reply_content, sr.created_date, sc.user_name, sc.user_image
+            FROM SAC_REPLY sr LEFT JOIN SAC_USERS sc
+            on sr.user_id = sc.user_id
+        WHERE sr.post_id = #{post_id}
     </select>
+
 </mapper>

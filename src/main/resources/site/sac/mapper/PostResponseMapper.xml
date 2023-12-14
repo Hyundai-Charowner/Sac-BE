@@ -41,4 +41,19 @@
         WHERE rn > (#{pageNum} - 1) * #{perPageNum} AND rn <= #{pageNum} * #{perPageNum}
         ]]>
     </select>
+    <select id="getPostDetail" resultType="site.sac.dto.PostResponseDTO">
+         SELECT sp.post_id,
+                sp.board_id,
+                sp.post_head,
+                sp.post_content,
+                sp.created_date,
+                sp.updated_date,
+                su.user_name,
+                su.user_image
+         FROM SAC_POST sp
+                  LEFT JOIN sac_users su
+                      ON sp.user_id = su.user_id
+        where sp.post_id = #{post_id}
+    </select>
+
 </mapper>
