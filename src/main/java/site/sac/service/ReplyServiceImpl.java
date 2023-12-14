@@ -42,10 +42,9 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Map<String, Object> getAllReplyByUserId(long userId) {
-        List<ReplyDTO> replies = replyMapper.getAllReplyByUserId(userId);
+        List<Map<String,Object>> replies = replyMapper.getAllReplyByUserId(userId);
         Map<String, Object> result = new HashMap<>();
         result.put("replies", replies);
-        result.put("count", replies.size());
 
         return result;
     }

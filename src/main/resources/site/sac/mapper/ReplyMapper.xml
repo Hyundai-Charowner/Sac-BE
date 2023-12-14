@@ -3,6 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.sac.mapper.ReplyMapper">
+    <resultMap id="replyMap" type="java.util.HashMap">
+        <result property="reply_content" column="reply_content"/>
+        <result property="user.user_id" column="user_id"/>
+        <result property="board_id" column="board_id"/>
+        <result property="post_head" column="post_head"/>
+        <result property="post_content" column="post_content"/>
+        <result property="created_date" column="created_date"/>
+        <result property="post_count" column="post_count"/>
+        <result property="post_likes" column="post_likes"/>
+        <result property="user.user_name" column="user_name"/>
+        <result property="user.user_image" column="user_image"/>
+    </resultMap>
+
     <insert id="insert">
         INSERT INTO SAC_REPLY ( post_id, user_id, reply_content)
         VALUES (#{post_id}, #{user_id}, #{reply_content})
@@ -16,13 +29,21 @@
         SELECT * FROM SAC_REPLY WHERE post_id = #{post_id}
     </select>
 
-    <select id="getAllReplyByUserId" resultType="site.sac.dto.ReplyDTO">
-        SELECT * FROM SAC_REPLY WHERE user_id = #{user_id}
+    <select id="getAllReplyByUserId" resultMap="replyMap">
+        select sj.reply_content, sj.post_head, sj.post_content, sj.created_date, sj.post_count, sj.post_likes,
+               su.user_name,su.user_image  from
+            (SELECT sr.reply_content, sr.user_id, sp.board_id,
+                    sp.post_head, sp.post_content, sp.created_date, sp.post_count,
+                    sp.post_likes
+             FROM SAC_REPLY sr left join SAC_POST sp
+                on sr.post_id = sp.post_id WHERE sr.user_id = #{user_id}) sj left join sac_users su
+                         on sj.user_id = su.user_id
     </select>
 
     <delete id="delete">
         DELETE FROM SAC_REPLY WHERE reply_id = #{reply_Id}
     </delete>
+
     <update id="update">
         update SAC_REPLY
         set reply_content=#{reply_content}

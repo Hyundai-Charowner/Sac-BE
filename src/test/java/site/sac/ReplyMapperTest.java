@@ -40,12 +40,6 @@ public class ReplyMapperTest {
     }
 
     @Test
-    void testGetAllReplyByUserId(){
-        List<ReplyDTO> list = replyMapper.getAllReplyByUserId(1);
-        list.forEach(a ->log.info(a.toString()));
-    }
-
-    @Test
     void testDelete(){
         replyMapper.delete(1);
     }

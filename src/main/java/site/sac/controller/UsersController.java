@@ -27,7 +27,7 @@ public class UsersController {
     }
     @GetMapping("/info")
     public ResponseEntity<UsersDTO> getUserInfo(HttpServletRequest request) {
-        UsersDTO result = usersService.userInfo((long)request.getAttribute("userId"));
+        UsersDTO result = usersService.userInfo((   long)request.getAttribute("userId"));
         return ResponseEntity.ok().body(result);
     }
 }
