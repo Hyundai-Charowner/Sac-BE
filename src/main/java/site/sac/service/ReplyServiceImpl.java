@@ -17,8 +17,8 @@ public class ReplyServiceImpl implements ReplyService {
     private ReplyMapper replyMapper;
 
     @Override
-    public void replyInsert(ReplyDTO replyDTO, long postId) {
-        replyDTO.setPost_id(postId);
+    public void replyInsert(ReplyDTO replyDTO, long userId) {
+        replyDTO.setUser_id(userId);
         replyMapper.insert(replyDTO);
     }
 
@@ -47,8 +47,8 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public void replyUpdate(ReplyDTO replyDTO, long replyId) {
-        if (replyMapper.read(replyId).getUser_id() == replyDTO.getUser_id()) {
+    public void replyUpdate(ReplyDTO replyDTO, long userId) {
+        if (replyMapper.read(replyDTO.getReply_id()).getUser_id() ==userId) {
             replyMapper.update(replyDTO);
         } else {
             throw new NullPointerException();
@@ -56,9 +56,9 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public void replyDelete(ReplyDTO replyDTO, long replyId) {
-        if (replyMapper.read(replyId).getUser_id() == replyDTO.getUser_id()) {
-            replyMapper.delete(replyId);
+    public void replyDelete(ReplyDTO replyDTO, long userId) {
+        if (replyMapper.read(replyDTO.getReply_id()).getUser_id() == userId) {
+            replyMapper.delete(replyDTO.getReply_id());
         } else {
             throw new NullPointerException();
         }

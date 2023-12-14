@@ -11,6 +11,7 @@ import site.sac.dto.ReplyDTO;
 import site.sac.service.ReplyService;
 import site.sac.service.UsersService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 @Slf4j
 @RestController
@@ -27,21 +28,21 @@ public class ReplyController {
         return ResponseEntity.ok().body(result);
     }
 
-    @PostMapping("/reply/{postId}")
-    public ResponseEntity<String> replyInesrt(RequestEntity<ReplyDTO> requestEntity, @PathVariable long postId) throws DataAccessException, NullPointerException {
-        replyService.replyInsert(requestEntity.getBody(), postId);
+    @PostMapping("/reply")
+    public ResponseEntity<String> replyInesrt(RequestEntity<ReplyDTO> requestEntity, HttpServletRequest request) throws DataAccessException, NullPointerException {
+        replyService.replyInsert(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(200).build();
     }
 
-    @PutMapping("/reply/{replyId}")
-    public ResponseEntity<ReplyDTO> replyUpdate(RequestEntity<ReplyDTO> requestEntity, @PathVariable long replyId) throws DataAccessException, NullPointerException {
-        replyService.replyUpdate(requestEntity.getBody(), replyId);
+    @PutMapping("/reply")
+    public ResponseEntity<ReplyDTO> replyUpdate(RequestEntity<ReplyDTO> requestEntity, HttpServletRequest request) throws DataAccessException, NullPointerException {
+        replyService.replyUpdate(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(200).body(requestEntity.getBody());
     }
 
-    @DeleteMapping("/reply/{replyId}")
-    public ResponseEntity<String> replyDelete(RequestEntity<ReplyDTO> requestEntity, @PathVariable long replyId) throws DataAccessException, NullPointerException {
-        replyService.replyDelete(requestEntity.getBody(), replyId);
+    @DeleteMapping("/reply")
+    public ResponseEntity<String> replyDelete(RequestEntity<ReplyDTO> requestEntity, HttpServletRequest request) throws DataAccessException, NullPointerException {
+        replyService.replyDelete(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
