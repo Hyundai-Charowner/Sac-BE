@@ -7,6 +7,4 @@ import java.util.List;
 public interface ReplyResponseMapper {
 
     List<ReplyResponseDTO> getAllReply(long post_id);
-
-
 }
