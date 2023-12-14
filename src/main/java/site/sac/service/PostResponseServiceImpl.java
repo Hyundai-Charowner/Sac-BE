@@ -23,7 +23,7 @@ public class PostResponseServiceImpl implements PostResponseService{
             post.setCreated_date(post.getCreated_date().substring(0, 16));
             post.setUpdated_date(post.getUpdated_date().substring(0, 16));
             return post;
-        }).collect(Collectors.toList());;
+        }).collect(Collectors.toList());
 
         Map<String,Object> result = new HashMap<>();
         result.put("posts", posts);
