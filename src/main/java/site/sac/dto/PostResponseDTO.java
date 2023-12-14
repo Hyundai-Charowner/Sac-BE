@@ -5,9 +5,8 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class PostDTO {
+public class PostResponseDTO {
     private long post_id;
-    private long user_id;
     private long board_id;
     private String post_head;
     private String post_content;
@@ -15,4 +14,9 @@ public class PostDTO {
     private Date updated_date;
     private long post_count;
     private long post_likes;
+
+    private String user_name;
+    private String user_image;
+
+    private long reply_count;
 }

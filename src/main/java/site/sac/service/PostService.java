@@ -23,4 +23,7 @@ public interface PostService {
     void delete(PostDTO postDTO, long postId);
 
     List<PostDTO> getPostsByLike(List<Long> likes);
+
+
+
 }

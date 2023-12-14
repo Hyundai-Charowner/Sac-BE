@@ -30,11 +30,12 @@ public class UsersServiceImpl implements UsersService {
         JWTPayloadDTO payload = stringToJSON(payloadString);
         String token = DigestUtils.sha256Hex(payload.getEmail());
 
-        if (isExistToken(token) == false) {
+        log.info("token.toString()");
+        if (isExistToken(token) == false) {  
             registerUser(payload);
             registerToken(token, usersMapper.select((payload.getEmail())));
         }
-
+        log.info("-----------");
         return token;
     }
 
@@ -76,6 +77,9 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public boolean isExistToken(String token) {
+        if (tokenMapper.select(token) == null){
+            log.info("왜이래");
+        } else log.info("왜이러냐고");
         return tokenMapper.select(token) != null;
     }
 

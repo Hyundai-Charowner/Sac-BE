@@ -8,9 +8,8 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.sac.dto.PostDTO;
+import site.sac.service.PostResponseService;
 import site.sac.service.PostService;
-import site.sac.service.UserLikeBoardService;
-import site.sac.service.UsersService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -23,9 +22,7 @@ public class PostController {
     @Autowired
     private PostService postService;
     @Autowired
-    private UserLikeBoardService userLikeBoardService;
-    @Autowired
-    private UsersService usersService;
+    private PostResponseService postResponseService;
 
     @PostMapping("")
     public ResponseEntity<String> postInsert(RequestEntity<PostDTO> postDTO, HttpServletRequest request) throws DataAccessException {
@@ -33,9 +30,9 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("") // 로그인 처리X
+    @PostMapping("/page")
     public ResponseEntity<Map<String,Object>> getAllPost() throws DataAccessException {
-        Map<String,Object> result= postService.getAllPost();
+        Map<String, Object> result = postResponseService.getPagingPost(requestBody.get("pageNum"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -51,7 +48,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/like") //수정 필요
+    @GetMapping("/like")
     public ResponseEntity<Map<String,Object>> getLikePostByUserId(RequestEntity<String> requestEntity){
         Map<String,Object> result = postService.getAllPostByUserId(Long.parseLong(requestEntity.getBody()));
         return ResponseEntity.status(HttpStatus.OK).body(result);
