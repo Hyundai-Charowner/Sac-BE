@@ -34,6 +34,10 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Map<String, Object> getAllReplyByPostId(long postId) {
+        log.info("----------------");
+        log.info("" + postId);
+        log.info("----------------");
+
         List<ReplyResponseDTO> replies = replyResponseMapper.getAllReply(new Criteria(), postId);
         Map<String, Object> result = new HashMap<>();
         result.put("replies", replies);
