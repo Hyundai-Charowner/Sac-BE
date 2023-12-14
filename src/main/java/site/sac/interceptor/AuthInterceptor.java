@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import site.sac.service.UsersService;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Slf4j
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
     @Autowired
@@ -16,11 +18,11 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("accessToken");
-
-        // if (token == null || !usersService.isExistToken(token)){
-        //     response.setStatus(401);
-        //     return false;
-        // }
+        log.info("interceptor");
+        if (token == null || !usersService.isExistToken(token)){
+            response.setStatus(401);
+            return false;
+        }
 
         long userId = usersService.findUserIdByToken(token);
         request.setAttribute("userId", userId);
