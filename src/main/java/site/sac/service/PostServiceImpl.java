@@ -97,7 +97,14 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public void delete(PostDTO postDTO, long userId) {
-        if(postMapper.read(postDTO.getPost_id()).getUser_id() == userId){
+        PostDTO post = postMapper.read(postDTO.getPost_id());
+
+        log.info("--------------------");
+        log.info("" + userId);
+        log.info("" + post.getUser_id());
+        log.info("--------------------");
+
+        if(post.getUser_id() == userId) {
             postMapper.delete(postDTO.getPost_id());
         } else {
             throw new NullPointerException();
