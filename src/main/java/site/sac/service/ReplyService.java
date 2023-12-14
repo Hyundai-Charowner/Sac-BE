@@ -3,17 +3,18 @@ package site.sac.service;
 import site.sac.dto.ReplyDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ReplyService {
-    public void replyInsert(ReplyDTO replyDTO);
+    void replyInsert(ReplyDTO replyDTO);
 
-    public void replyDelete(long replyId);
+    void replyDelete(ReplyDTO replyDTO,long replyId);
 
-    public ReplyDTO replyRead(long replyId);
+    ReplyDTO replyRead(long replyId);
 
-    public List<ReplyDTO> getAllReplyByPostId(long postId);
+    Map<String,Object> getAllReplyByPostId(long postId);
 
-    public List<ReplyDTO> getAllReplyByUserId(long postId);
+    Map<String, Object> getAllReplyByUserId(long postId);
 
-    public void replyUpdate(ReplyDTO replyDTO);
+    void replyUpdate(ReplyDTO replyDTO, long replyId);
 }

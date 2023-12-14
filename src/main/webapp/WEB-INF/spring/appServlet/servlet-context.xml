@@ -14,14 +14,14 @@
     <annotation-driven />
 
     <resources mapping="/resources/**" location="/resources/" />
-
+<!-- cors config.xml-->
     <beans:import resource="classpath:site/sac/config/cors-config.xml"/>
 
     <mvc:interceptors>
         <interceptor>
-            <mapping path="/**" />
+            <mapping path="/**"/>
             <exclude-mapping path="/login/**"/>
-            <beans:bean class="site.sac.interceptor.AuthInterceptor" />
+            <beans:bean class="site.sac.interceptor.AuthInterceptor"/>
         </interceptor>
     </mvc:interceptors>
 

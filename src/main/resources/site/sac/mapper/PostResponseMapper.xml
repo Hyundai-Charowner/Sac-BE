@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.sac.mapper.PostResponseMapper">
+    <select id="getPostAll" resultType="site.sac.dto.PostResponseDTO">
+        SELECT rownum as rn, result.*
+        FROM (
+        SELECT sp.post_id,
+            sp.board_id,
+            sp.post_head,
+            sp.post_content,
+            sp.created_date,
+            sp.updated_date,
+            sp.post_count,
+            sp.post_likes,
+            nvl(sr.reply_count, 0),
+            su.user_name,
+            su.user_image
+        FROM SAC_POST sp
+        LEFT JOIN (
+        SELECT post_id, COUNT(*) as reply_count
+        FROM sac_reply
+        GROUP BY post_id
+        ) sr ON sp.post_id = sr.post_id
+        LEFT JOIN sac_users su ON sp.user_id = su.user_id
+        ORDER BY sp.post_id DESC
+        ) result
+        <![CDATA[
+        WHERE rownum > (#{pageNum} - 1) * #{perPageNum} AND rownum <= #{pageNum} * #{perPageNum}
+        ]]>
+    </select>
+</mapper>

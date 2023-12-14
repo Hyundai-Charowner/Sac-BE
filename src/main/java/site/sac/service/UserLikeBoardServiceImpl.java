@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import site.sac.dto.UserLikeBoardDTO;
 import site.sac.mapper.UserLikeBoardMapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -25,8 +27,11 @@ public class UserLikeBoardServiceImpl implements UserLikeBoardService{
     }
 
     @Override
-    public List<String> getAllByUserId(long userId) {
+    public Map<String,Object> getAllByUserId(long userId) {
         List<String> list = userLikeBoardMapper.getAllByUserId(userId);
-        return list;
+        Map<String,Object> result = new HashMap<>();
+        result.put("likeList", list);
+        result.put("count", list.size());
+        return result;
     }
 }
