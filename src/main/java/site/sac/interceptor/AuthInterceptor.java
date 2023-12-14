@@ -17,6 +17,10 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (request.getMethod().equals("OPTIONS")) {
+            return true;
+        }
+
         String token = request.getHeader("accessToken");
         log.info("interceptor");
         if (token == null || !usersService.isExistToken(token)){
