@@ -1,5 +1,6 @@
 package site.sac.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class LogInController {
     private UsersService usersService;
 
     @PostMapping("/google")
-    public ResponseEntity<String> googleLogin(@RequestBody GoogleOAuthDTO googleOAuth) {
+    public ResponseEntity<String> googleLogin(@RequestBody GoogleOAuthDTO googleOAuth) throws JsonProcessingException {
         log.info(googleOAuth.toString());
         log.info("===============");
         return ResponseEntity.status(HttpStatus.OK).body(usersService.register(googleOAuth));

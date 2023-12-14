@@ -22,6 +22,9 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
+        long userId = usersService.findUserIdByToken(token);
+        request.setAttribute("userId", userId);
+
         return true;
     }
 }

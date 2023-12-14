@@ -2,11 +2,10 @@ package site.sac.service;
 
 import site.sac.dto.ReplyDTO;
 
-import java.util.List;
 import java.util.Map;
 
 public interface ReplyService {
-    void replyInsert(ReplyDTO replyDTO);
+    void replyInsert(ReplyDTO replyDTO, long postId);
 
     void replyDelete(ReplyDTO replyDTO,long replyId);
 

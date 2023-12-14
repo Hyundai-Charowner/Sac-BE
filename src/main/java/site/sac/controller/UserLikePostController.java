@@ -2,6 +2,7 @@ package site.sac.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -26,22 +27,18 @@ public class UserLikePostController {
     private PostService postService;
 
     @PostMapping("")
-    public ResponseEntity<UserLikePostDTO> postLike(RequestEntity<UserLikePostDTO> requestEntity){
+    public ResponseEntity<UserLikePostDTO> postLike(RequestEntity<UserLikePostDTO> requestEntity) throws DataAccessException {
         userLikePostService.postLike(requestEntity.getBody());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     @DeleteMapping
-    public ResponseEntity<UserLikePostDTO> postLikeDelete(RequestEntity<UserLikePostDTO> requestEntity){
+    public ResponseEntity<UserLikePostDTO> postLikeDelete(RequestEntity<UserLikePostDTO> requestEntity) throws DataAccessException {
         userLikePostService.postDelete(requestEntity.getBody());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     @GetMapping("/list") //수정 필요
-    public ResponseEntity<Map<String,Object>> getUserLikePosts(RequestEntity<String> requestEntity){
-        long userId = Long.parseLong(requestEntity.getBody());
-        Map<String,Object> result = userLikePostService.getPostsByUserId(userId);
+    public ResponseEntity<Map<String,Object>> getUserLikePosts(RequestEntity<String> requestEntity) throws DataAccessException {
+        Map<String,Object> result = userLikePostService.getPostsByUserId(requestEntity.getBody());
         return ResponseEntity.status(HttpStatus.OK).body(result);
-
         }
-
     }
-

@@ -1,5 +1,6 @@
 package site.sac.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -24,15 +25,13 @@ public class UsersServiceImpl implements UsersService {
     private TokenMapper tokenMapper;
 
     @Override
-    public String register(GoogleOAuthDTO googleOAuthDTO) {
-        JWTPayloadDTO payload = getPayload(googleOAuthDTO);
+    public String register(GoogleOAuthDTO googleOAuthDTO) throws JsonProcessingException {
+        String payloadString = getPayloadString(googleOAuthDTO);
+        JWTPayloadDTO payload = stringToJSON(payloadString);
         String token = DigestUtils.sha256Hex(payload.getEmail());
+
         log.info("token.toString()");
-        try {
-            isExistToken(token);
-        } catch (Exception e){log.info(e.getMessage());};
-        if (!isExistToken(token)) {
-            log.info("123456");
+        if (isExistToken(token) == false) {  
             registerUser(payload);
             registerToken(token, usersMapper.select((payload.getEmail())));
         }
@@ -57,23 +56,22 @@ public class UsersServiceImpl implements UsersService {
         tokenMapper.insert(tokenDTO);
     }
 
-    private JWTPayloadDTO getPayload(GoogleOAuthDTO googleOAuth) {
+    private String getPayloadString(GoogleOAuthDTO googleOAuth) {
         String[] chunks = googleOAuth.getCredential().split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
         String payloadString = new String(decoder.decode(chunks[1]));
-        return stringToJSON(payloadString);
+
+        log.info(chunks.toString());
+        log.info("-0--------------");
+        log.info(payloadString);
+        return payloadString;
     }
 
-    private JWTPayloadDTO stringToJSON(String jsonString) {
+    private JWTPayloadDTO stringToJSON(String jsonString) throws JsonProcessingException {
         JWTPayloadDTO payload = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        payload = objectMapper.readValue(jsonString, JWTPayloadDTO.class);
 
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            payload = objectMapper.readValue(jsonString, JWTPayloadDTO.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        log.info(payload.toString());
         return payload;
     }
 
@@ -87,7 +85,6 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public long findUserIdByToken(String token) {
-
         return tokenMapper.select(token).getUser_id();
     }
 }

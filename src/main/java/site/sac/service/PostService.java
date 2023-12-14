@@ -7,7 +7,7 @@ import java.util.Map;
 
 public interface PostService {
 
-    void register(PostDTO postDTO);
+    void register(PostDTO postDTO, long userId);
     Map<String,Object>  getAllPost();
 
     public PostDTO getPostDetail(Long postId);
@@ -17,7 +17,7 @@ public interface PostService {
     Map<String,Object> getAllPostByUserId(Long userId);
 
     List<PostDTO> getAllPostByUserLikeBoard(List<String> userLikeBoards);
-    void postEdit(PostDTO postDTO);
+    void postEdit(PostDTO postDTO, long postId);
 
 
     void delete(PostDTO postDTO, long postId);

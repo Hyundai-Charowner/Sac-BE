@@ -23,33 +23,32 @@ public class PostServiceImpl implements PostService{
 
     @Transactional
     @Override
-    public void register(PostDTO postDTO) {
+    public void register(PostDTO postDTO, long userId) {
+        postDTO.setUser_id(userId);
         postMapper.insert(postDTO);
     }
 
     @Override
-    public Map<String,Object>  getAllPost() {
-
+    public Map<String,Object> getAllPost() {
         List<PostDTO> allPost = postMapper.getAllPost();
         Map<String,Object> result = new HashMap<>();
         result.put("posts", allPost);
         return result;
-
     }
-
 
     @Override
     public PostDTO getPostDetail(Long postId) {
-        PostDTO post = postMapper.read(postId);
-        return post;
+        return postMapper.read(postId);
     }
 
     @Override
-    public Map<String,Object> getPostsByBoardId(Long boardId){
+    public Map<String,Object> getPostsByBoardId(Long boardId) {
         List<PostDTO> postsByBoardId = postMapper.getAllPostsByBoardId(boardId);
+
         if (postsByBoardId == null){
             throw new NullPointerException();
         }
+
         Map<String,Object> result = new HashMap<>();
         result.put("posts", postsByBoardId);
         result.put("count", postsByBoardId.size());
@@ -78,26 +77,25 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void postEdit(PostDTO postDTO) {
-        if(postMapper.read(postDTO.getPost_id()).getUser_id()== postDTO.getUser_id()){
+    public void postEdit(PostDTO postDTO, long postId) {
+        if(postMapper.read(postId).getUser_id() == postDTO.getUser_id()){
             postMapper.update(postDTO);
-
-        } else throw new NullPointerException();
-
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     @Override
     public void delete(PostDTO postDTO, long postId) {
         if(postMapper.read(postId).getUser_id()== postDTO.getUser_id()){
             postMapper.delete(postId);
-
-        } else throw new NullPointerException();
+        } else {
+            throw new NullPointerException();
+        }
     }
 
     @Override
     public List<PostDTO> getPostsByLike(List<Long> likes) {
-
         return postMapper.getPostsByLike(likes);
     }
-
 }
