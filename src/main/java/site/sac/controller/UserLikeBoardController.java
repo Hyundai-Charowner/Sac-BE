@@ -32,7 +32,7 @@ public class UserLikeBoardController {
         return ResponseEntity.status(HttpStatus.OK).build();
 
     }
-    @DeleteMapping("/boards/{boardId}")
+    @DeleteMapping("/boards")
     public ResponseEntity<String> deleteLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity, HttpServletRequest request) throws DataAccessException {
         userLikeBoardService.delete(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();

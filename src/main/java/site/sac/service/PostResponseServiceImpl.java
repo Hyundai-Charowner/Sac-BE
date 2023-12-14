@@ -23,4 +23,21 @@ public class PostResponseServiceImpl implements PostResponseService{
         result.put("posts", posts);
         return result;
     }
+
+    @Override
+    public PostResponseDTO getDetail(long postId) {
+        PostResponseDTO dto = postResponseMapper.getPostDetail(postId);
+
+        return dto;
+    }
+
+    @Override
+    public Map<String, Object> getPagingPostByBoardId(long pageNum, long boardId) {
+        Criteria cri = new Criteria();
+        cri.setPageNum(pageNum);
+        List<PostResponseDTO> posts = postResponseMapper.getPostAllByBoardId(cri,boardId);
+        Map<String,Object> result = new HashMap<>();
+        result.put("posts", posts);
+        return result;
+    }
 }

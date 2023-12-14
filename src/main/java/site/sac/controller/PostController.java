@@ -8,6 +8,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.sac.dto.PostDTO;
+import site.sac.dto.PostResponseDTO;
 import site.sac.service.PostResponseService;
 import site.sac.service.PostService;
 
@@ -37,14 +38,14 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostDTO> getPostDetail(@PathVariable Long postId) throws DataAccessException {
-        PostDTO postDetail = postService.getPostDetail(postId);
+    public ResponseEntity<PostResponseDTO> getPostDetail(@PathVariable Long postId) throws DataAccessException {
+        PostResponseDTO postDetail = postResponseService.getDetail(postId);
         return new ResponseEntity<>(postDetail, HttpStatus.OK);
     }
 
-    @GetMapping("/board/{boardId}")
-    public ResponseEntity<Map<String,Object>> getAllPostByBoardId(@PathVariable Long boardId) throws DataAccessException {
-        Map<String, Object> result= postService.getPostsByBoardId(boardId);
+    @PostMapping("/board")
+    public ResponseEntity<Map<String,Object>> getAllPostByBoardId(@RequestBody Map<String, Long> requestBody) throws DataAccessException {
+        Map<String, Object> result= postResponseService.getPagingPostByBoardId(requestBody.get("boardId"), requestBody.get("pageNum"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
