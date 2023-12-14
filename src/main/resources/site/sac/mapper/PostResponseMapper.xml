@@ -15,7 +15,7 @@
                result.user_name,
                result.user_image,
                result.reply_count
-        FROM (select sr2.*, sb.board_category from(
+        FROM (select sr2.*, sb.board_category, rownum as rn from(
               SELECT sp.post_id,
                      sp.board_id,
                      sp.post_head,
@@ -38,7 +38,7 @@
           ) sr2 left join sac_board sb
                           on sr2.board_id = sb.board_id) result
         <![CDATA[
-        WHERE rownum > (#{pageNum} - 1) * #{perPageNum} AND rownum <= #{pageNum} * #{perPageNum}
+        WHERE rn > (#{pageNum} - 1) * #{perPageNum} AND rn <= #{pageNum} * #{perPageNum}
         ]]>
     </select>
 </mapper>
