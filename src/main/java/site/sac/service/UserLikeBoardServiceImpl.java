@@ -27,7 +27,9 @@ public class UserLikeBoardServiceImpl implements UserLikeBoardService{
     }
 
     @Override
-    public Map<String,Object> getAllByUserId(long userId) {
+    public Map<String,Object> getAllByUserId(String userIdString) {
+        long userId = Long.parseLong(userIdString);
+
         List<String> list = userLikeBoardMapper.getAllByUserId(userId);
         Map<String,Object> result = new HashMap<>();
         result.put("likeList", list);

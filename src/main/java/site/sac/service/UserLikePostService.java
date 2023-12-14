@@ -2,7 +2,6 @@ package site.sac.service;
 
 import site.sac.dto.UserLikePostDTO;
 
-import java.util.List;
 import java.util.Map;
 
 public interface UserLikePostService {
@@ -12,6 +11,6 @@ public interface UserLikePostService {
 
     public int countLikeByPostId(long postId);
 
-    public Map<String,Object> getPostsByUserId(long userId);
+    public Map<String,Object> getPostsByUserId(String userIdString);
 
 }

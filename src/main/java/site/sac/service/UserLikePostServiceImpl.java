@@ -37,7 +37,8 @@ public class UserLikePostServiceImpl implements UserLikePostService{
     }
 
     @Override
-    public Map<String,Object> getPostsByUserId(long userId) {
+    public Map<String,Object> getPostsByUserId(String userIdString) {
+        long userId = Long.parseLong(userIdString);
         List<Long> list = userLikePostMapper.getAllByUserId(userId);
         List<PostDTO> posts = postMapper.getPostsByLike(list);
 

@@ -2,6 +2,7 @@ package site.sac.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -20,22 +21,22 @@ public class UserLikeBoardController {
 
     @Autowired
     private UsersService usersService;
-    @GetMapping("/boards")
-    public ResponseEntity<Map<String,Object>> getUserLikeBoards(RequestEntity<String> requestEntity){
-        long userId = Long.parseLong(requestEntity.getBody());
-        Map<String,Object> result = userLikeBoardService.getAllByUserId(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(result);
 
+    @GetMapping("/boards")
+    public ResponseEntity<Map<String,Object>> getUserLikeBoards(RequestEntity<String> requestEntity) throws DataAccessException {
+        Map<String,Object> result = userLikeBoardService.getAllByUserId(requestEntity.getBody());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
     @PostMapping("/boards")
-    public ResponseEntity<String> insertLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity){
+    public ResponseEntity<String> insertLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity) throws DataAccessException {
         log.info(requestEntity.toString());
         userLikeBoardService.insert(requestEntity.getBody());
         return ResponseEntity.status(HttpStatus.OK).build();
 
     }
     @DeleteMapping("/boards/{boardId}")
-    public ResponseEntity<String> deleteLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity, @PathVariable Long boardId){
+    public ResponseEntity<String> deleteLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity) throws DataAccessException {
         userLikeBoardService.delete(requestEntity.getBody());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
