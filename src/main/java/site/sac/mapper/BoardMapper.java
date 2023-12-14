@@ -5,7 +5,7 @@ import site.sac.dto.BoardDTO;
 import java.util.List;
 
 public interface BoardMapper {
-    public int insert(BoardDTO boardDTO);
+    int insert(BoardDTO boardDTO);
 
-    public List<BoardDTO> readAll();
+    List<BoardDTO> readAll();
 }
