@@ -44,13 +44,13 @@ public class PostController {
 
     @GetMapping("/board/{boardId}")
     public ResponseEntity<Map<String,Object>> getAllPostByBoardId(@PathVariable Long boardId) throws DataAccessException {
-        Map<String, Object> result= postService.getPostsByBoardId(boardId);
+        Map<String, Object> result= postResponseService.getPostsByBoardId(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/list")
     public ResponseEntity<Map<String,Object>> getAllPostByUserId(HttpServletRequest request){
-            Map<String,Object> result = postService.getAllPostByUserId((long)request.getAttribute("userId"));
+            Map<String,Object> result = postResponseService.getAllPostByUserId((long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

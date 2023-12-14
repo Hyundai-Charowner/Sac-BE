@@ -8,6 +8,7 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.sac.dto.UserLikePostDTO;
+import site.sac.service.PostResponseService;
 import site.sac.service.UserLikePostService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,8 @@ import java.util.Map;
 public class UserLikePostController {
     @Autowired
     private UserLikePostService userLikePostService;
+    @Autowired
+    private PostResponseService postResponseService;
 
     @PostMapping
     public ResponseEntity<UserLikePostDTO> postLike(RequestEntity<UserLikePostDTO> requestEntity, HttpServletRequest request) throws DataAccessException {
@@ -31,7 +34,7 @@ public class UserLikePostController {
     }
     @GetMapping("/list") //수정 필요
     public ResponseEntity<Map<String,Object>> getUserLikePosts(HttpServletRequest request) throws DataAccessException {
-        Map<String,Object> result = userLikePostService.getPostsByUserId((long)request.getAttribute("userId"));
+        Map<String,Object> result = postResponseService.getAllPostByUserId((long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
         }
     }

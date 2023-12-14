@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.sac.dto.PostDTO;
+import site.sac.dto.PostResponseDTO;
 import site.sac.mapper.PostMapper;
-import site.sac.mapper.UserLikeBoardMapper;
+import site.sac.mapper.PostResponseMapper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ public class PostServiceImpl implements PostService{
     private PostMapper postMapper;
 
     @Autowired
-    private UserLikeBoardMapper userLikeBoardMapper;
+    private PostResponseMapper postResponseMapper;
 
     @Transactional
     @Override
@@ -62,10 +63,11 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<PostDTO> getAllPostByUserLikeBoard(List<String> userLikeBoards) {
-        List<PostDTO> postsByUserLikeBoard = postMapper.getAllPostByUserLikeBoard(userLikeBoards);
-        postsByUserLikeBoard.forEach(post->log.info("post : " + post.toString()));
-        return postsByUserLikeBoard;
+    public Map<String, Object> getAllPostByUserLikeBoard(long userId) {
+        List<PostResponseDTO> posts = postResponseMapper.getPostByBoardLike(userId);
+        Map<String,Object> result = new HashMap<>();
+        result.put("posts", posts);
+        return result;
     }
 
     @Override

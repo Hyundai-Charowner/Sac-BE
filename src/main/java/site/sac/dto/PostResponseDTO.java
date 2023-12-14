@@ -12,6 +12,7 @@ public class PostResponseDTO {
     private String updated_date;
     private long post_count;
     private long post_likes;
+    private long isLike; //1이면 좋아요 0이면 X
 
     private String user_name;
     private String user_image;

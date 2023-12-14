@@ -66,4 +66,36 @@ public class PostResponseServiceImpl implements PostResponseService{
         return result;
     }
 
+    @Override
+    public Map<String, Object> getPostsByBoardId(long boardId) {
+        List<PostResponseDTO> postsByBoardId = postResponseMapper.getPostByBoardLike(boardId);
+
+        if (postsByBoardId == null){
+            throw new NullPointerException();
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("posts", postsByBoardId);
+
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getAllPostByUserId(long userId) {
+        List<PostResponseDTO> posts = postResponseMapper.getPostByPostLike(userId);
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("posts", posts);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getAllPostByLikeBoard(long userId) {
+        List<PostResponseDTO> posts = postResponseMapper.getPostByBoardLike(userId);
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("posts", posts);
+        return result;
+    }
+
 }

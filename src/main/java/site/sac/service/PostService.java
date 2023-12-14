@@ -14,7 +14,7 @@ public interface PostService {
 
     Map<String,Object> getAllPostByUserId(Long userId);
 
-    List<PostDTO> getAllPostByUserLikeBoard(List<String> userLikeBoards);
+    Map<String, Object> getAllPostByUserLikeBoard(long userId);
     void postEdit(PostDTO postDTO, long postId);
 
 
