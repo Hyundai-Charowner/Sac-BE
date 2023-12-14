@@ -13,28 +13,28 @@ import site.sac.service.UsersService;
 import java.util.Map;
 @Slf4j
 @RestController
-@RequestMapping
+@RequestMapping("/user")
 public class UserLikeBoardController {
     @Autowired
     private UserLikeBoardService userLikeBoardService;
 
     @Autowired
     private UsersService usersService;
-    @GetMapping("/user/boards")
+    @GetMapping("/boards")
     public ResponseEntity<Map<String,Object>> getUserLikeBoards(RequestEntity<String> requestEntity){
         long userId = Long.parseLong(requestEntity.getBody());
         Map<String,Object> result = userLikeBoardService.getAllByUserId(userId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
 
     }
-    @PostMapping("/user/boards")
+    @PostMapping("/boards")
     public ResponseEntity<String> insertLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity){
         log.info(requestEntity.toString());
         userLikeBoardService.insert(requestEntity.getBody());
         return ResponseEntity.status(HttpStatus.OK).build();
 
     }
-    @DeleteMapping("/user/boards/{boardId}")
+    @DeleteMapping("/boards/{boardId}")
     public ResponseEntity<String> deleteLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity, @PathVariable Long boardId){
         userLikeBoardService.delete(requestEntity.getBody());
         return ResponseEntity.status(HttpStatus.OK).build();

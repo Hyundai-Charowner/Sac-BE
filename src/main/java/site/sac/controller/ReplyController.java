@@ -10,8 +10,6 @@ import site.sac.dto.ReplyDTO;
 import site.sac.service.ReplyService;
 import site.sac.service.UsersService;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 @Slf4j
 @RestController
@@ -57,9 +55,6 @@ public class ReplyController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-
-
 
     }
 

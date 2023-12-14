@@ -21,6 +21,5 @@ public class UsersController {
         long userId = Long.parseLong(requestEntity.getBody());
         Map<String, Object> result = replyService.getAllReplyByUserId(userId);
         return ResponseEntity.ok().body(result);
-
     }
 }
