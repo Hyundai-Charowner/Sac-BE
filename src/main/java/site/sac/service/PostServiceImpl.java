@@ -79,7 +79,16 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public void postEdit(PostDTO postDTO, long userId) {
-        if(postMapper.read(postDTO.getPost_id()).getUser_id()== userId){
+        PostDTO post = postMapper.read(postDTO.getPost_id());
+
+        log.info("--------------------");
+        log.info("" + userId);
+        log.info("" + post.getUser_id());
+        log.info("--------------------");
+
+        if(post.getUser_id() == userId){
+            post.setPost_head(postDTO.getPost_head());
+            post.setPost_content(postDTO.getPost_content());
             postMapper.update(postDTO);
         } else {
             throw new NullPointerException();
