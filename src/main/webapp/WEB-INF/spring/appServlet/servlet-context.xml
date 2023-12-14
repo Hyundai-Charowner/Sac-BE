@@ -21,6 +21,7 @@
         <interceptor>
             <mapping path="/**"/>
             <exclude-mapping path="/login/**"/>
+            <exclude-mapping path="/ranking/**"/>
             <beans:bean class="site.sac.interceptor.AuthInterceptor"/>
         </interceptor>
     </mvc:interceptors>
