@@ -19,7 +19,7 @@ public class UserLikePostController {
     @Autowired
     private UserLikePostService userLikePostService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<UserLikePostDTO> postLike(RequestEntity<UserLikePostDTO> requestEntity, HttpServletRequest request) throws DataAccessException {
         userLikePostService.postLike(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
