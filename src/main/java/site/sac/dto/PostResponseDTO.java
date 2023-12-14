@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class PostResponseDTO {
     private long post_id;
-    private long board_id;
+    private String board_category;
     private String post_head;
     private String post_content;
     private Date created_date;

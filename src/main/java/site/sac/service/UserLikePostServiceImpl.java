@@ -23,11 +23,13 @@ public class UserLikePostServiceImpl implements UserLikePostService{
 
     @Override
     public void postLike(UserLikePostDTO userLikePostDTO) {
+        postMapper.likeUp(userLikePostDTO.getPost_id());
         userLikePostMapper.insert(userLikePostDTO);
     }
 
     @Override
     public void postDelete(UserLikePostDTO userLikePostDTO) {
+        postMapper.likeDown(userLikePostDTO.getPost_id());
         userLikePostMapper.delete(userLikePostDTO);
     }
 
