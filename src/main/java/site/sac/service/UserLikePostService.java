@@ -9,8 +9,6 @@ public interface UserLikePostService {
 
     public void postDelete(UserLikePostDTO userLikePostDTO, long userId);
 
-    public int countLikeByPostId(long postId);
-
     public Map<String,Object> getPostsByUserId(long userId);
 
 }
