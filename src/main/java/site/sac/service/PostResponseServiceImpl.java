@@ -30,11 +30,15 @@ public class PostResponseServiceImpl implements PostResponseService{
     public Map<String,Object> getPagingPost(long pageNum) {
         Criteria cri = new Criteria();
         cri.setPageNum(pageNum);
-        List<PostResponseDTO> posts = postResponseMapper.getPostAll(cri).stream().map((post) -> {
-            post.setCreated_date(post.getCreated_date().substring(0, 16));
-            post.setUpdated_date(post.getUpdated_date().substring(0, 16));
-            return post;
-        }).collect(Collectors.toList());
+        List<PostResponseDTO> posts = postResponseMapper.getPostAll(cri)
+                .stream()
+                .sorted(Comparator.comparing(PostResponseDTO::getCreated_date).reversed())
+                .map((post) -> {
+                    post.setCreated_date(post.getCreated_date().substring(0, 16));
+                    post.setUpdated_date(post.getUpdated_date().substring(0, 16));
+                    return post;
+                })
+                .collect(Collectors.toList());
 
         Map<String,Object> result = new HashMap<>();
         result.put("posts", posts);
