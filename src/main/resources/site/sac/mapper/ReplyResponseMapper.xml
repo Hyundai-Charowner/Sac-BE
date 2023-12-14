@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.sac.mapper.ReplyResponseMapper">
+    <select id="getAllReply" resultType="site.sac.dto.ReplyResponseDTO">
+        SELECT result.reply_content, result.user_name, result.user_image FROM
+        (SELECT rownum as rn, sr.reply_content, su.user_name, su.user_image
+        FROM SAC_REPLY sr LEFT JOIN SAC_USER su
+        on sr.user_id = su.user_id
+        where sr.post_id = #{post_id}
+        order by sr.reply_id desc) result
+        <![CDATA[
+        WHERE rn > (#{cri.pageNum} - 1) * #{cri.perPageNum} AND rn <= #{cri.pageNum} * #{cri.perPageNum}
+        ]]>
+    </select>
+</mapper>

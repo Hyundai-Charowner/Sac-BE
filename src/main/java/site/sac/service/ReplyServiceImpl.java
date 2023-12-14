@@ -3,8 +3,11 @@ package site.sac.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import site.sac.domain.Criteria;
 import site.sac.dto.ReplyDTO;
+import site.sac.dto.ReplyResponseDTO;
 import site.sac.mapper.ReplyMapper;
+import site.sac.mapper.ReplyResponseMapper;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.Map;
 public class ReplyServiceImpl implements ReplyService {
     @Autowired
     private ReplyMapper replyMapper;
+    @Autowired
+    private ReplyResponseMapper replyResponseMapper;
 
     @Override
     public void replyInsert(ReplyDTO replyDTO, long userId) {
@@ -29,7 +34,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Map<String, Object> getAllReplyByPostId(long postId) {
-        List<ReplyDTO> replies = replyMapper.getAllReplyByPostId(postId);
+        List<ReplyResponseDTO> replies = replyResponseMapper.getPostReply(new Criteria(), postId);
         Map<String, Object> result = new HashMap<>();
         result.put("replies", replies);
 
