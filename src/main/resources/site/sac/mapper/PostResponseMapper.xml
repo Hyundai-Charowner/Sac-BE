@@ -44,6 +44,7 @@
     <select id="getPostDetail" resultType="site.sac.dto.PostResponseDTO">
          SELECT sa.board_id,
                 sa.post_id,
+                sa.post_head,
                 sa.post_content,
                 sa.created_date,
                 sa.user_name,
