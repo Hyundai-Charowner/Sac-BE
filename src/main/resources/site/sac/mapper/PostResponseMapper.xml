@@ -34,6 +34,7 @@
                   GROUP BY post_id
               ) sr ON sp.post_id = sr.post_id
                        LEFT JOIN sac_users su ON sp.user_id = su.user_id
+
               ORDER BY sp.post_id DESC
           ) sr2 left join sac_board sb
                           on sr2.board_id = sb.board_id) result
@@ -41,4 +42,78 @@
         WHERE rn > (#{pageNum} - 1) * #{perPageNum} AND rn <= #{pageNum} * #{perPageNum}
         ]]>
     </select>
+
+    <select id="getPostDetail" resultType="site.sac.dto.PostResponseDTO">
+        SELECT result.post_id,
+               result.board_category,
+               result.post_head,
+               result.post_content,
+               result.created_date,
+               result.updated_date,
+               result.post_count,
+               result.post_likes,
+               result.user_name,
+               result.user_image,
+               result.reply_count
+        FROM (select sr2.*, sb.board_category, rownum as rn from(
+        SELECT sp.post_id,
+               sp.board_id,
+               sp.post_head,
+               sp.post_content,
+               sp.created_date,
+               sp.updated_date,
+               sp.post_count,
+               sp.post_likes,
+               nvl(sr.reply_count, 0) as reply_count,
+               su.user_name,
+               su.user_image
+        FROM SAC_POST sp
+                 LEFT JOIN (
+            SELECT post_id, COUNT(*) as reply_count
+            FROM sac_reply
+            GROUP BY post_id
+        ) sr ON sp.post_id = sr.post_id
+                 LEFT JOIN sac_users su ON sp.user_id = su.user_id
+        where sp.post_id = #{post_id}
+        ORDER BY sp.post_id DESC
+    ) sr2 left join sac_board sb
+                    on sr2.board_id = sb.board_id) result
+    </select>
+    <select id="getPostAllByBoardId" resultType="site.sac.dto.PostResponseDTO">
+        SELECT result.post_id,
+               result.board_category,
+               result.post_head,
+               result.post_content,
+               result.created_date,
+               result.updated_date,
+               result.post_count,
+               result.post_likes,
+               result.user_name,
+               result.user_image,
+               result.reply_count
+        FROM (select sr2.*, sb.board_category, rownum as rn from(
+                                                                    SELECT sp.post_id,
+                                                                           sp.board_id,
+                                                                           sp.post_head,
+                                                                           sp.post_content,
+                                                                           sp.created_date,
+                                                                           sp.updated_date,
+                                                                           sp.post_count,
+                                                                           sp.post_likes,
+                                                                           nvl(sr.reply_count, 0) as reply_count,
+                                                                           su.user_name,
+                                                                           su.user_image
+                                                                    FROM SAC_POST sp
+                                                                             LEFT JOIN (
+                                                                        SELECT post_id, COUNT(*) as reply_count
+                                                                        FROM sac_reply
+                                                                        GROUP BY post_id
+                                                                    ) sr ON sp.post_id = sr.post_id
+                                                                             LEFT JOIN sac_users su ON sp.user_id = su.user_id
+                                                                    WHERE sp.board_id = #{board_id}
+                                                                    ORDER BY sp.post_id DESC
+                                                                ) sr2 left join sac_board sb
+                                                                                on sr2.board_id = sb.board_id) result
+    </select>
+
 </mapper>
