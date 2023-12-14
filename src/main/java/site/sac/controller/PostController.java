@@ -50,7 +50,7 @@ public class PostController {
 
     @GetMapping("/list")
     public ResponseEntity<Map<String,Object>> getAllPostByUserId(HttpServletRequest request){
-        Map<String,Object> result = postService.getAllPostByUserId((long)request.getAttribute("userId"));
+            Map<String,Object> result = postService.getAllPostByUserId((long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -62,6 +62,7 @@ public class PostController {
 
     @DeleteMapping
     public ResponseEntity<PostDTO> postDelete(RequestEntity<PostDTO> requestEntity, HttpServletRequest request){
+        log.info(requestEntity.toString());
         postService.delete(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
     }

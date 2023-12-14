@@ -1,12 +1,8 @@
 package site.sac.domain;
 
-import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-@ToString
 @Setter
-@Getter
 public class Criteria {
     private long pageNum;
     private long perPageNum;
