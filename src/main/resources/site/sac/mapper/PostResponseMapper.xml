@@ -42,7 +42,15 @@
         ]]>
     </select>
     <select id="getPostDetail" resultType="site.sac.dto.PostResponseDTO">
-         SELECT sp.post_id,
+         SELECT sa.board_id,
+                sa.post_id,
+                sa.post_content,
+                sa.created_date,
+                sa.user_name,
+                sa.user_image,
+                sb.board_category
+         FROM
+            (SELECT sp.post_id,
                 sp.board_id,
                 sp.post_head,
                 sp.post_content,
@@ -53,7 +61,8 @@
          FROM SAC_POST sp
                   LEFT JOIN sac_users su
                       ON sp.user_id = su.user_id
-        where sp.post_id = #{post_id}
+        where sp.post_id = #{post_id}) sa LEFT JOIN SAC_BOARD sb
+        on sa.board_id = sb.board_id
     </select>
 
 </mapper>

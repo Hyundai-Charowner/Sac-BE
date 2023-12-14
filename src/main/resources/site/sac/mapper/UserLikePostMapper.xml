@@ -17,7 +17,20 @@
         SELECT COUNT(*) FROM SAC_USER_LIKE_POST WHERE post_id = #{post_id}
     </select>
 
-    <select id="getAllByUserId" resultType="string">
-        SELECT post_id FROM SAC_USER_LIKE_POST WHERE user_id = #{user_id}
+    <select id="getAllByUserId" resultType="ResultMap">
+        SELECT sp.post_id,
+               sp.board_id,
+               sp.post_head,
+               sp.post_content,
+               sp.created_date,
+               sp.updated_date,
+               su.user_name,
+               su.user_image
+        FROM SAC_POST sp
+                 LEFT JOIN sac_users su
+                           ON sp.user_id = su.user_id
+        where sp.post_id = #{post_id}
     </select>
+
+
 </mapper>
