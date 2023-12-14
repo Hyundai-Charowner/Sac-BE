@@ -3,21 +3,27 @@ package site.sac.service;
 import site.sac.dto.PostDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PostService {
 
-    public void register(PostDTO postDTO);
-    public List<PostDTO> getAllPost();
+    void register(PostDTO postDTO, long userId);
+    Map<String,Object>  getAllPost();
 
     public PostDTO getPostDetail(Long postId);
 
-    public List<PostDTO> getPostsByBoardId(Long boardId);
+    Map<String,Object> getPostsByBoardId(Long boardId) throws NullPointerException;
 
-    public List<PostDTO> getAllPostByUserLikeBoard(List<String> userLikeBoards);
+    Map<String,Object> getAllPostByUserId(Long userId);
 
-    public PostDTO postEdit(PostDTO postDTO);
+    List<PostDTO> getAllPostByUserLikeBoard(List<String> userLikeBoards);
+    void postEdit(PostDTO postDTO, long postId);
 
-    public void delete(Long postId);
 
-    public List<PostDTO> getPostsByLike(List<Long> likes);
+    void delete(PostDTO postDTO, long postId);
+
+    List<PostDTO> getPostsByLike(List<Long> likes);
+
+
+
 }

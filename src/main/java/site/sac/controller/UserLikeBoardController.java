@@ -1,78 +1,43 @@
 package site.sac.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import site.sac.dto.BoardDTO;
-import site.sac.dto.PostDTO;
 import site.sac.dto.UserLikeBoardDTO;
-import site.sac.dto.UsersDTO;
 import site.sac.service.UserLikeBoardService;
-import site.sac.service.UserLikeBoardServiceImpl;
 import site.sac.service.UsersService;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
+@Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/user")
 public class UserLikeBoardController {
     @Autowired
     private UserLikeBoardService userLikeBoardService;
 
     @Autowired
     private UsersService usersService;
-    @GetMapping("/user/boards")
-    public ResponseEntity<Map<String,Object>> getUserLikeBoards(RequestEntity<UserLikeBoardDTO> requestEntity){
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
-        if(accessToken !=null && usersService.isExistToken(accessToken)){
-            try {
-                List<String> list = userLikeBoardService.getAllByUserId(userId);
-                Map<String,Object> result = new HashMap<>();
 
-                result.put("likeList", list);
-                result.put("count", list.size());
-                return ResponseEntity.ok().body(result);
-            } catch (Exception e){return ResponseEntity.status(500).body(null);}
-
-        }
-        return ResponseEntity.status(500).body(null);
+    @GetMapping("/boards")
+    public ResponseEntity<Map<String,Object>> getUserLikeBoards(RequestEntity<String> requestEntity) throws DataAccessException {
+        Map<String,Object> result = userLikeBoardService.getAllByUserId(requestEntity.getBody());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
-    @PostMapping("/user/boards")
-    public ResponseEntity<String> insertLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity){
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
 
-        if(accessToken !=null && usersService.isExistToken(accessToken)){
-            requestEntity.getBody().setUser_id(userId);
-            UserLikeBoardDTO dto = requestEntity.getBody();
-            userLikeBoardService.insert(dto);
-            return ResponseEntity.ok().body("board add : success");
-        }
-
-        return ResponseEntity.notFound().build();
+    @PostMapping("/boards")
+    public ResponseEntity<String> insertLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity) throws DataAccessException {
+        log.info(requestEntity.toString());
+        userLikeBoardService.insert(requestEntity.getBody());
+        return ResponseEntity.status(HttpStatus.OK).build();
 
     }
-    @DeleteMapping("/user/boards/{boardId}")
-    public ResponseEntity<String> deleteLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity, @PathVariable Long boardId){
-        String accessToken = requestEntity.getHeaders().getFirst("accessToken");
-        long userId = usersService.findUserIdByToken(accessToken);
-
-        if(accessToken !=null && usersService.isExistToken(accessToken)){
-            try {
-                requestEntity.getBody().setUser_id(userId);
-                userLikeBoardService.delete(requestEntity.getBody());
-                return ResponseEntity.ok().body("board 삭제 성공");
-            }
-            catch (Exception e){
-                return ResponseEntity.notFound().build();
-            }
-
-        }
-        return ResponseEntity.notFound().build();
+    @DeleteMapping("/boards/{boardId}")
+    public ResponseEntity<String> deleteLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity) throws DataAccessException {
+        userLikeBoardService.delete(requestEntity.getBody());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
