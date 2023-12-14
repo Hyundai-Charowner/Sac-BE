@@ -39,6 +39,11 @@ public class ReplyServiceImpl implements ReplyService {
         log.info("----------------");
 
         List<ReplyResponseDTO> replies = replyResponseMapper.getAllReply(new Criteria(), postId);
+
+
+        log.info("----------------");
+        log.info("불러옴");
+        log.info("----------------");
         Map<String, Object> result = new HashMap<>();
         result.put("replies", replies);
 
