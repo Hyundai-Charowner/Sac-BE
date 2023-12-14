@@ -3,7 +3,7 @@ package site.sac.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import site.sac.dto.PostDTO;
+import site.sac.dto.PostResponseDTO;
 import site.sac.dto.UserLikePostDTO;
 import site.sac.mapper.PostMapper;
 import site.sac.mapper.UserLikePostMapper;
@@ -34,20 +34,12 @@ public class UserLikePostServiceImpl implements UserLikePostService{
         postMapper.likeDown(userLikePostDTO.getPost_id());
         userLikePostMapper.delete(userLikePostDTO);
     }
-
-    @Override
-    public int countLikeByPostId(long postId) {
-        return userLikePostMapper.countByPostId(postId);
-    }
-
     @Override
     public Map<String,Object> getPostsByUserId(long userId) {
-        List<Long> list = userLikePostMapper.getAllByUserId(userId);
-        List<PostDTO> posts = postMapper.getPostsByLike(list);
+        List<PostResponseDTO> post = userLikePostMapper.getAllByUserId(userId);
 
         Map<String,Object> result = new HashMap<>();
-        result.put("posts", posts);
-        result.put("count", posts.size());
+        result.put("post", post);
 
         return result;
     }
