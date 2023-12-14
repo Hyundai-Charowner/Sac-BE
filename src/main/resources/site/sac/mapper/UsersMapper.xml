@@ -17,4 +17,9 @@
         select * from SAC_USERS
         where user_email = #{user_email}
     </select>
+
+    <select id="read" resultType="site.sac.dto.UsersDTO">
+        select user_id, user_name, user_image,user_email from sac_users
+        where user_id = #{user_id}
+    </select>
 </mapper>

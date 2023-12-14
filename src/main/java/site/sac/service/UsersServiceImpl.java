@@ -87,4 +87,10 @@ public class UsersServiceImpl implements UsersService {
     public long findUserIdByToken(String token) {
         return tokenMapper.select(token).getUser_id();
     }
+
+    @Override
+    public UsersDTO userInfo(long user_id) {
+        UsersDTO users = usersMapper.read(user_id);
+        return users;
+    }
 }
