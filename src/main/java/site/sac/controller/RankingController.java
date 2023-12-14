@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import site.sac.service.RankingService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ranking")
@@ -24,8 +25,8 @@ public class RankingController {
     }
 
     @GetMapping("/passion")
-    public ResponseEntity<List<String>> getPassionRankingt() throws DataAccessException, NullPointerException {
-        List<String> result = rankingService.getPassionRanking();
+    public ResponseEntity<Map<String, Object>> getPassionRankingt() throws DataAccessException, NullPointerException {
+        Map<String, Object> result = rankingService.getPassionRanking();
         return ResponseEntity.status(200).body(result);
     }
 }

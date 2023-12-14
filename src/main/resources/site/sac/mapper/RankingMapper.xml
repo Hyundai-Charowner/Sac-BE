@@ -14,8 +14,8 @@
             where rownum <=5]]>
         </select>
 
-    <select id="rankPassion" resultType="string">
-        select su.user_name
+    <select id="rankPassion" resultMap="userMap">
+        select su.user_name, su.user_image
         from
             (select count(*), user_id from sac_post
              group by user_id
@@ -24,4 +24,9 @@
             <![CDATA[
         where rownum <=5]]>
     </select>
+
+    <resultMap id="userMap" type="java.util.HashMap">
+        <result column="user_name" property="user_name"/>
+        <result column="user_image" property="user_image"/>
+    </resultMap>
 </mapper>
