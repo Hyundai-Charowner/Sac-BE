@@ -37,10 +37,16 @@ public class PostResponseServiceImpl implements PostResponseService{
     @Override
     public Map<String,Object> getDetail(long postId) {
         PostResponseDTO post = postResponseMapper.getPostDetail(postId);
-        List<ReplyResponseDTO> reply = replyResponseMapper.getAllReply(postId);
+        post.setCreated_date(post.getCreated_date().substring(0, 16));
+        post.setUpdated_date(post.getUpdated_date().substring(0, 16));
+        List<ReplyResponseDTO> replies = replyResponseMapper.getAllReply(postId).stream().map((reply) -> {
+            reply.setCreated_date(reply.getCreated_date().substring(0, 16));
+            return reply;
+        }).collect(Collectors.toList());
+
         Map<String,Object> result = new HashMap<>();
         result.put("post", post);
-        result.put("reply", reply);
+        result.put("reply", replies);
         return result;
     }
 

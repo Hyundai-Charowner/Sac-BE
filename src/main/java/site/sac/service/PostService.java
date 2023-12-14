@@ -10,8 +10,6 @@ public interface PostService {
     void register(PostDTO postDTO, long userId);
     Map<String,Object>  getAllPost();
 
-    public PostDTO getPostDetail(Long postId);
-
     Map<String,Object> getPostsByBoardId(Long boardId) throws NullPointerException;
 
     Map<String,Object> getAllPostByUserId(Long userId);

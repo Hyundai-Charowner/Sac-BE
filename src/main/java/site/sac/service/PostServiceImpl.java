@@ -37,15 +37,6 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public PostDTO getPostDetail(Long postId) {
-        postMapper.countUp(postId);
-        PostDTO post = postMapper.read(postId);
-        post.setCreated_date(post.getCreated_date().substring(0, 16));
-        post.setUpdated_date(post.getUpdated_date().substring(0, 16));
-        return post;
-    }
-
-    @Override
     public Map<String,Object> getPostsByBoardId(Long boardId) {
         List<PostDTO> postsByBoardId = postMapper.getAllPostsByBoardId(boardId);
 
