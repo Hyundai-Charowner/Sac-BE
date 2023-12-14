@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import site.sac.domain.Criteria;
 import site.sac.dto.PostResponseDTO;
 import site.sac.dto.ReplyResponseDTO;
+import site.sac.mapper.PostMapper;
 import site.sac.mapper.PostResponseMapper;
 import site.sac.mapper.ReplyResponseMapper;
 
@@ -19,6 +20,9 @@ public class PostResponseServiceImpl implements PostResponseService{
     private PostResponseMapper postResponseMapper;
     @Autowired
     private ReplyResponseMapper replyResponseMapper;
+
+    @Autowired
+    private PostMapper postMapper;
     @Override
     public Map<String,Object> getPagingPost(long pageNum) {
         Criteria cri = new Criteria();
@@ -43,6 +47,8 @@ public class PostResponseServiceImpl implements PostResponseService{
             reply.setCreated_date(reply.getCreated_date().substring(0, 16));
             return reply;
         }).collect(Collectors.toList());
+
+        postMapper.countUp(postId);
 
         Map<String,Object> result = new HashMap<>();
         result.put("post", post);
