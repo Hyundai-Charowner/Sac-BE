@@ -17,18 +17,19 @@ public class UserLikeBoardServiceImpl implements UserLikeBoardService{
     private UserLikeBoardMapper userLikeBoardMapper;
 
     @Override
-    public void insert(UserLikeBoardDTO userLikeBoardDTO) {
+    public void insert(UserLikeBoardDTO userLikeBoardDTO, long userId) {
+        userLikeBoardDTO.setUser_id(userId);
         userLikeBoardMapper.insert(userLikeBoardDTO);
     }
 
     @Override
-    public void delete(UserLikeBoardDTO userLikeBoardDTO) {
+    public void delete(UserLikeBoardDTO userLikeBoardDTO, long userId) {
+        userLikeBoardDTO.setUser_id(userId);
         userLikeBoardMapper.delete(userLikeBoardDTO);
     }
 
     @Override
-    public Map<String,Object> getAllByUserId(String userIdString) {
-        long userId = Long.parseLong(userIdString);
+    public Map<String,Object> getAllByUserId(long userId) {
 
         List<String> list = userLikeBoardMapper.getAllByUserId(userId);
         Map<String,Object> result = new HashMap<>();

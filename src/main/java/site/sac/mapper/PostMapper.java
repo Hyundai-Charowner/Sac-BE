@@ -26,4 +26,6 @@ public interface PostMapper {
     List<PostDTO> getAllPostsByBoardId(Long board_id);
 
     List<PostDTO> getPostsByLike(List<Long> like_list);
+
+    List<PostDTO> getPostsByUserId(long user_id);
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface UserLikeBoardService {
 
-    void insert(UserLikeBoardDTO userLikeBoardDTO);
-    void delete(UserLikeBoardDTO userLikeBoardDTO);
-    Map<String,Object> getAllByUserId(String userIdString);
+    void insert(UserLikeBoardDTO userLikeBoardDTO, long userId);
+    void delete(UserLikeBoardDTO userLikeBoardDTO, long userId);
+    Map<String,Object> getAllByUserId(long userId);
 }
