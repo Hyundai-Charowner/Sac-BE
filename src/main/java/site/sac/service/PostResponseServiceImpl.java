@@ -9,6 +9,7 @@ import site.sac.mapper.PostResponseMapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class PostResponseServiceImpl implements PostResponseService{
@@ -18,7 +19,12 @@ public class PostResponseServiceImpl implements PostResponseService{
     public Map<String,Object> getPagingPost(long pageNum) {
         Criteria cri = new Criteria();
         cri.setPageNum(pageNum);
-        List<PostResponseDTO> posts = postResponseMapper.getPostAll(cri);
+        List<PostResponseDTO> posts = postResponseMapper.getPostAll(cri).stream().map((post) -> {
+            post.setCreated_date(post.getCreated_date().substring(0, 16));
+            post.setUpdated_date(post.getUpdated_date().substring(0, 16));
+            return post;
+        }).collect(Collectors.toList());
+
         Map<String,Object> result = new HashMap<>();
         result.put("posts", posts);
         return result;

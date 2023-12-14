@@ -24,7 +24,7 @@ public class PostController {
     @Autowired
     private PostResponseService postResponseService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<String> postInsert(RequestEntity<PostDTO> postDTO, HttpServletRequest request) throws DataAccessException {
         postService.register(postDTO.getBody(), (long) request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -42,27 +42,28 @@ public class PostController {
         return new ResponseEntity<>(postDetail, HttpStatus.OK);
     }
 
-    @GetMapping("/{boardId}")
+    @GetMapping("/board/{boardId}")
     public ResponseEntity<Map<String,Object>> getAllPostByBoardId(@PathVariable Long boardId) throws DataAccessException {
         Map<String, Object> result= postService.getPostsByBoardId(boardId);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/like")
-    public ResponseEntity<Map<String,Object>> getLikePostByUserId(RequestEntity<String> requestEntity){
-        Map<String,Object> result = postService.getAllPostByUserId(Long.parseLong(requestEntity.getBody()));
+    @GetMapping("/list")
+    public ResponseEntity<Map<String,Object>> getAllPostByUserId(HttpServletRequest request){
+            Map<String,Object> result = postService.getAllPostByUserId((long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @PutMapping("/{postId}")
-    public ResponseEntity<PostDTO> postEdit(RequestEntity<PostDTO> requestEntity, @PathVariable Long postId) throws DataAccessException, NullPointerException {
-        postService.postEdit(requestEntity.getBody(), postId);
+    @PutMapping
+    public ResponseEntity<PostDTO> postEdit(RequestEntity<PostDTO> requestEntity, HttpServletRequest request) throws DataAccessException, NullPointerException {
+        postService.postEdit(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/{postId}")
-    public ResponseEntity<PostDTO> postDelete(RequestEntity<PostDTO> requestEntity, @PathVariable Long postId){
-        postService.delete(requestEntity.getBody(), postId);
+    @DeleteMapping
+    public ResponseEntity<PostDTO> postDelete(RequestEntity<PostDTO> requestEntity, HttpServletRequest request){
+        log.info(requestEntity.toString());
+        postService.delete(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

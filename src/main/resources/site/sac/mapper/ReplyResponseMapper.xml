@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.sac.mapper.ReplyResponseMapper">
+    <select id="getAllReply" resultType="site.sac.dto.ReplyResponseDTO">
+        SELECT reply_content, user_id, created_date
+        FROM SAC_REPLY
+        WHERE post_id = #{post_id}
+    </select>
+</mapper>

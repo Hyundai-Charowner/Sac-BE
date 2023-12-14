@@ -22,12 +22,16 @@ public class UserLikePostServiceImpl implements UserLikePostService{
     private PostMapper postMapper;
 
     @Override
-    public void postLike(UserLikePostDTO userLikePostDTO) {
+    public void postLike(UserLikePostDTO userLikePostDTO, long userId) {
+        userLikePostDTO.setUser_id(userId);
+        postMapper.likeUp(userLikePostDTO.getPost_id());
         userLikePostMapper.insert(userLikePostDTO);
     }
 
     @Override
-    public void postDelete(UserLikePostDTO userLikePostDTO) {
+    public void postDelete(UserLikePostDTO userLikePostDTO, long userId) {
+        userLikePostDTO.setUser_id(userId);
+        postMapper.likeDown(userLikePostDTO.getPost_id());
         userLikePostMapper.delete(userLikePostDTO);
     }
 
@@ -37,8 +41,7 @@ public class UserLikePostServiceImpl implements UserLikePostService{
     }
 
     @Override
-    public Map<String,Object> getPostsByUserId(String userIdString) {
-        long userId = Long.parseLong(userIdString);
+    public Map<String,Object> getPostsByUserId(long userId) {
         List<Long> list = userLikePostMapper.getAllByUserId(userId);
         List<PostDTO> posts = postMapper.getPostsByLike(list);
 

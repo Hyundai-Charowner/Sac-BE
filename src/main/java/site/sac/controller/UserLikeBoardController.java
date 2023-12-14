@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.sac.dto.UserLikeBoardDTO;
 import site.sac.service.UserLikeBoardService;
-import site.sac.service.UsersService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 @Slf4j
 @RestController
@@ -19,25 +19,22 @@ public class UserLikeBoardController {
     @Autowired
     private UserLikeBoardService userLikeBoardService;
 
-    @Autowired
-    private UsersService usersService;
 
     @GetMapping("/boards")
-    public ResponseEntity<Map<String,Object>> getUserLikeBoards(RequestEntity<String> requestEntity) throws DataAccessException {
-        Map<String,Object> result = userLikeBoardService.getAllByUserId(requestEntity.getBody());
+    public ResponseEntity<Map<String,Object>> getUserLikeBoards(HttpServletRequest request) throws DataAccessException {
+        Map<String,Object> result = userLikeBoardService.getAllByUserId((long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping("/boards")
-    public ResponseEntity<String> insertLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity) throws DataAccessException {
-        log.info(requestEntity.toString());
-        userLikeBoardService.insert(requestEntity.getBody());
+    public ResponseEntity<String> insertLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity, HttpServletRequest request) throws DataAccessException {
+        userLikeBoardService.insert(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
 
     }
     @DeleteMapping("/boards/{boardId}")
-    public ResponseEntity<String> deleteLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity) throws DataAccessException {
-        userLikeBoardService.delete(requestEntity.getBody());
+    public ResponseEntity<String> deleteLikeBoard(RequestEntity<UserLikeBoardDTO> requestEntity, HttpServletRequest request) throws DataAccessException {
+        userLikeBoardService.delete(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

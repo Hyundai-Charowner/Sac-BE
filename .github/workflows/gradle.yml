@@ -49,4 +49,4 @@ jobs:
           
           # Pull and run the application container
           docker pull ${{ secrets.DOCKER_USERNAME }}/sac-be
-          docker run -d --name sac-be --network fe-be ${{ secrets.DOCKER_USERNAME }}/sac-be
+          docker run -d --name sac-be --network nginx-fe ${{ secrets.DOCKER_USERNAME }}/sac-be

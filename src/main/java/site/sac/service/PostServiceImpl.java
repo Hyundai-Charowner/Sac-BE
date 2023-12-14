@@ -38,7 +38,11 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public PostDTO getPostDetail(Long postId) {
-        return postMapper.read(postId);
+        postMapper.countUp(postId);
+        PostDTO post = postMapper.read(postId);
+        post.setCreated_date(post.getCreated_date().substring(0, 16));
+        post.setUpdated_date(post.getUpdated_date().substring(0, 16));
+        return post;
     }
 
     @Override
@@ -57,11 +61,8 @@ public class PostServiceImpl implements PostService{
     }
     @Override
     public Map<String,Object> getAllPostByUserId(Long userId){
-        List<String> userLikeBoard = userLikeBoardMapper.getAllByUserId(userId);
-        if (userLikeBoard == null){
-            throw new NullPointerException();
-        }
-        List<PostDTO> posts = postMapper.getAllPostByUserLikeBoard(userLikeBoard);
+        List<PostDTO> posts = postMapper.getPostsByUserId(userId);
+
         Map<String,Object> result = new HashMap<>();
         result.put("posts", posts);
         result.put("count", posts.size());
@@ -77,8 +78,17 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void postEdit(PostDTO postDTO, long postId) {
-        if(postMapper.read(postId).getUser_id() == postDTO.getUser_id()){
+    public void postEdit(PostDTO postDTO, long userId) {
+        PostDTO post = postMapper.read(postDTO.getPost_id());
+
+        log.info("--------------------");
+        log.info("" + userId);
+        log.info("" + post.getUser_id());
+        log.info("--------------------");
+
+        if(post.getUser_id() == userId){
+            post.setPost_head(postDTO.getPost_head());
+            post.setPost_content(postDTO.getPost_content());
             postMapper.update(postDTO);
         } else {
             throw new NullPointerException();
@@ -86,9 +96,16 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void delete(PostDTO postDTO, long postId) {
-        if(postMapper.read(postId).getUser_id()== postDTO.getUser_id()){
-            postMapper.delete(postId);
+    public void delete(PostDTO postDTO, long userId) {
+        PostDTO post = postMapper.read(postDTO.getPost_id());
+
+        log.info("--------------------");
+        log.info("" + userId);
+        log.info("" + post.getUser_id());
+        log.info("--------------------");
+
+        if(post.getUser_id() == userId) {
+            postMapper.delete(postDTO.getPost_id());
         } else {
             throw new NullPointerException();
         }
