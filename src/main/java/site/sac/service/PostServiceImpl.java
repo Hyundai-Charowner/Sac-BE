@@ -38,6 +38,7 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public PostDTO getPostDetail(Long postId) {
+        postMapper.countUp(postId);
         return postMapper.read(postId);
     }
 
