@@ -14,8 +14,8 @@
                       , res.post_likes
                       , res.user_name
                       , res.user_image
-                      , res.reply_count
              , case when sulp.like_id is null then 0 else 1 end as likes
+            , reply_count
         from (SELECT rownum as rn,
                      result.post_id,
                      result.board_category,
