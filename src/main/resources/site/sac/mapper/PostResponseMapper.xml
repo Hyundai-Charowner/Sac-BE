@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.sac.mapper.PostResponseMapper">
     <select id="getPostAll" resultType="site.sac.dto.PostResponseDTO">
-        select res.*, case when sulp.like_id is null then 0 else 1 end as likes
+        select DISTINCT  res.*, case when sulp.like_id is null then 0 else 1 end as likes
         from (SELECT rownum as rn,
-                     DISTINCT result.post_id,
+                     result.post_id,
                      result.board_category,
                      result.post_head,
                      result.post_content,
