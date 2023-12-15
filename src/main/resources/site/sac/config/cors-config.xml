@@ -7,9 +7,9 @@
     </mvc:cors>
 
 
-    <mvc:cors>
-        <mvc:mapping path="/**" allowed-origins="https://sac.momster"/>
-    </mvc:cors>
+<!--    <mvc:cors>-->
+<!--        <mvc:mapping path="/**" allowed-origins="https://sac.momster"/>-->
+<!--    </mvc:cors>-->
 
 
 <!--    <mvc:cors>-->
