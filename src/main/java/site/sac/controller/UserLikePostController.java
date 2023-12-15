@@ -32,7 +32,7 @@ public class UserLikePostController {
         userLikePostService.postDelete(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-    @GetMapping("/list") //수정 필요
+    @GetMapping("/list")
     public ResponseEntity<Map<String,Object>> getUserLikePosts(HttpServletRequest request) throws DataAccessException {
         Map<String,Object> result = postResponseService.getAllPostByUserId((long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).body(result);

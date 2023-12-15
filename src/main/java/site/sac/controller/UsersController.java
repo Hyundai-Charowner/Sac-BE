@@ -1,5 +1,6 @@
 package site.sac.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,7 @@ import site.sac.service.UsersService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
-
+@Slf4j
 @RestController
 @RequestMapping("/users")
 public class UsersController {
@@ -25,6 +26,7 @@ public class UsersController {
 
     @GetMapping("/replies")
     public ResponseEntity<Map<String, Object>> getAllRepliesByUserId(HttpServletRequest request) {
+        log.info("1");
         Map<String, Object> result = replyService.getAllReplyByUserId((long)request.getAttribute("userId"));
         return ResponseEntity.ok().body(result);
     }

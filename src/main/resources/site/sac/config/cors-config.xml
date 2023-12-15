@@ -6,10 +6,10 @@
         <mvc:mapping path="/**" allowed-origins="*"/>
     </mvc:cors>
 
-    <!-- 아래는 특정 도메인 허용-->
-<!--    <mvc:cors>-->
-<!--        <mvc:mapping path="/**" allowed-origins="http://localhost:1841"/>-->
-<!--    </mvc:cors>-->
+
+    <mvc:cors>
+        <mvc:mapping path="/**" allowed-origins="https://sac.momster"/>
+    </mvc:cors>
 
 
 <!--    <mvc:cors>-->

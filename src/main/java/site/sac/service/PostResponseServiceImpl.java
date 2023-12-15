@@ -98,4 +98,12 @@ public class PostResponseServiceImpl implements PostResponseService{
         return result;
     }
 
+    @Override
+    public Map<String, Object> getResisterPost(long userId) {
+        List<PostResponseDTO> posts = postResponseMapper.getResiterPost(userId);
+        Map<String,Object> result = new HashMap<>();
+        result.put("posts", posts);
+        return result;
+    }
+
 }

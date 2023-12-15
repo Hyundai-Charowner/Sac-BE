@@ -50,7 +50,7 @@ public class PostController {
 
     @GetMapping("/list")
     public ResponseEntity<Map<String,Object>> getAllPostByUserId(HttpServletRequest request){
-            Map<String,Object> result = postResponseService.getAllPostByUserId((long)request.getAttribute("userId"));
+            Map<String,Object> result = postResponseService.getResisterPost((long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

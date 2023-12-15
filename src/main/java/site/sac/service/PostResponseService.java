@@ -14,4 +14,6 @@ public interface PostResponseService {
 
     Map<String,Object> getAllPostByLikeBoard(long userId);
 
+    Map<String,Object> getResisterPost(long userId);
+
 }

@@ -16,4 +16,6 @@ public interface PostResponseMapper {
     List<PostResponseDTO> getPostByPostLike(long user_id);
 
     List<PostResponseDTO> getPostByBoard(long board_id);
+
+    List<PostResponseDTO> getResiterPost(long user_id);
 }
