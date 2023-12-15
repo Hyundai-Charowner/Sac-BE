@@ -10,7 +10,7 @@
     </insert>
 
     <delete id="delete">
-        DELETE SAC_USER_LIKE_BOARD WHERE user_id = #{user_id} AND board_id = #{board_id}
+        DELETE FROM SAC_USER_LIKE_BOARD WHERE user_id = #{user_id} AND board_id = #{board_id}
     </delete>
 
     <select id="getAllByUserId" resultType="integer">
