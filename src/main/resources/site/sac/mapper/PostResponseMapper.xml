@@ -4,70 +4,68 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.sac.mapper.PostResponseMapper">
     <select id="getPostAll" resultType="site.sac.dto.PostResponseDTO">
-        select res.*, case when sulp.like_id is null then 0 else 1 end as likes
-        from (SELECT rownum as rn,
-                     result.post_id,
-                     result.board_category,
-                     result.post_head,
-                     result.post_content,
-                     result.created_date,
-                     result.updated_date,
-                     result.post_count,
-                     result.post_likes,
-                     result.user_name,
-                     result.user_image,
-                     result.reply_count
-              FROM (select sr2.*, sb.board_category, rownum as rn
-                    from (SELECT sp.post_id,
-                                 sp.board_id,
-                                 sp.post_head,
-                                 sp.post_content,
-                                 sp.created_date,
-                                 sp.updated_date,
-                                 sp.post_count,
-                                 sp.post_likes,
-                                 nvl(sr.reply_count,
-                                     0) as reply_count,
-                                 su.user_name,
-                                 su.user_image
-                          FROM SAC_POST sp
-                                   LEFT JOIN (SELECT post_id,
-                                                     COUNT(*) as reply_count
-                                              FROM sac_reply
-                                              GROUP BY post_id) sr ON sp.post_id = sr.post_id
-                                   LEFT JOIN sac_users su ON sp.user_id = su.user_id
-                          ORDER BY sp.post_id DESC) sr2
-                             left join sac_board sb on sr2.board_id = sb.board_id) result) res
-                 left join sac_user_like_post sulp
-                           on res.post_id = sulp.post_id
-<![CDATA[
-        WHERE rn > (#{pageNum} - 1) * #{perPageNum}
-          AND rn <= #{pageNum} * #{perPageNum}
+        SELECT *
+        FROM (SELECT res.*, CASE WHEN sulp.like_id IS NULL THEN 0 ELSE 1 END AS likes
+              FROM (SELECT ROWNUM as rn,
+                           result.post_id,
+                           result.board_category,
+                           result.post_head,
+                           result.post_content,
+                           result.created_date,
+                           result.updated_date,
+                           result.post_count,
+                           result.post_likes,
+                           result.user_name,
+                           result.user_image,
+                           result.reply_count
+                    FROM (SELECT sr2.*, sb.board_category
+                          FROM (SELECT sp.post_id,
+                                       sp.board_id,
+                                       sp.post_head,
+                                       sp.post_content,
+                                       sp.created_date,
+                                       sp.updated_date,
+                                       sp.post_count,
+                                       sp.post_likes,
+                                       NVL(sr.reply_count, 0) AS reply_count,
+                                       su.user_name,
+                                       su.user_image
+                                FROM SAC_POST sp
+                                         LEFT JOIN (SELECT post_id, COUNT(*) AS reply_count
+                                                    FROM sac_reply
+                                                    GROUP BY post_id) sr ON sp.post_id = sr.post_id
+                                         LEFT JOIN sac_users su ON sp.user_id = su.user_id
+                                ORDER BY sp.post_id DESC) sr2
+                                   LEFT JOIN sac_board sb ON sr2.board_id = sb.board_id) result
+            <![CDATA[
+                    WHERE ROWNUM <= (#{pageNum} * #{perPageNum})) res
+                       LEFT JOIN sac_user_like_post sulp ON res.post_id = sulp.post_id
+              WHERE res.rn > (#{pageNum} - 1) * #{perPageNum})
         ]]>
     </select>
     <select id="getPostDetail" resultType="site.sac.dto.PostResponseDTO">
-         SELECT sa.board_id,
-                sa.post_id,
-                sa.post_head,
-                sa.post_content,
-                sa.created_date,
-                sa.user_name,
-                sa.user_image,
-                sb.board_category
-         FROM
-            (SELECT sp.post_id,
-                sp.board_id,
-                sp.post_head,
-                sp.post_content,
-                sp.created_date,
-                sp.updated_date,
-                su.user_name,
-                su.user_image
-         FROM SAC_POST sp
-                  LEFT JOIN sac_users su
-                      ON sp.user_id = su.user_id
-        where sp.post_id = #{post_id}) sa LEFT JOIN SAC_BOARD sb
-        on sa.board_id = sb.board_id
+        SELECT sa.board_id,
+               sa.post_id,
+               sa.post_head,
+               sa.post_content,
+               sa.created_date,
+               sa.user_name,
+               sa.user_image,
+               sb.board_category
+        FROM (SELECT sp.post_id,
+                     sp.board_id,
+                     sp.post_head,
+                     sp.post_content,
+                     sp.created_date,
+                     sp.updated_date,
+                     su.user_name,
+                     su.user_image
+              FROM SAC_POST sp
+                       LEFT JOIN sac_users su
+                                 ON sp.user_id = su.user_id
+              where sp.post_id = #{post_id}) sa
+                 LEFT JOIN SAC_BOARD sb
+                           on sa.board_id = sb.board_id
     </select>
     <select id="getPostByBoardLike" resultType="site.sac.dto.PostResponseDTO">
         select res.*, case when sulp.like_id is null then 0 else 1 end as likes
@@ -149,53 +147,45 @@
                  left join sac_user_like_post sulp
                            on res.post_id = sulp.post_id
         WHERE res.post_id IN
-            (select post_id from sac_user_like_post where user_id = #{user_id} )
+              (select post_id from sac_user_like_post where user_id = #{user_id})
     </select>
     <select id="getPostByBoard" resultType="site.sac.dto.PostResponseDTO">
         SELECT res.*,
                CASE WHEN sulp.like_id IS NULL THEN 0 ELSE 1 END AS likes
-        FROM (
-                 SELECT rownum AS rn,
-                        result.post_id,
-                        result.board_category,
-                        result.post_head,
-                        result.post_content,
-                        result.created_date,
-                        result.updated_date,
-                        result.post_count,
-                        result.post_likes,
-                        result.user_name,
-                        result.user_image,
-                        result.reply_count
-                 FROM (
-                          SELECT sr2.*,
-                                 sb.board_category,
-                                 rownum AS rn
-                          FROM (
-                                   SELECT sp.post_id,
-                                          sp.board_id,
-                                          sp.post_head,
-                                          sp.post_content,
-                                          sp.created_date,
-                                          sp.updated_date,
-                                          sp.post_count,
-                                          sp.post_likes,
-                                          NVL(sr.reply_count, 0) AS reply_count,
-                                          su.user_name,
-                                          su.user_image
-                                   FROM SAC_POST sp
-                                            LEFT JOIN (
-                                       SELECT post_id, COUNT(*) AS reply_count
-                                       FROM sac_reply
-                                       GROUP BY post_id
-                                   ) sr ON sp.post_id = sr.post_id
-                                            LEFT JOIN sac_users su ON sp.user_id = su.user_id
-                                   ORDER BY sp.post_id DESC
-                               ) sr2
-                                   LEFT JOIN sac_board sb ON sr2.board_id = sb.board_id
-                      ) result
-                 WHERE result.board_id = #{board_id}
-             ) res
+        FROM (SELECT rownum AS rn,
+                     result.post_id,
+                     result.board_category,
+                     result.post_head,
+                     result.post_content,
+                     result.created_date,
+                     result.updated_date,
+                     result.post_count,
+                     result.post_likes,
+                     result.user_name,
+                     result.user_image,
+                     result.reply_count
+              FROM (SELECT sr2.*,
+                           sb.board_category,
+                           rownum AS rn
+                    FROM (SELECT sp.post_id,
+                                 sp.board_id,
+                                 sp.post_head,
+                                 sp.post_content,
+                                 sp.created_date,
+                                 sp.updated_date,
+                                 sp.post_count,
+                                 sp.post_likes,
+                                 NVL(sr.reply_count, 0) AS reply_count,
+                                 su.user_name,
+                                 su.user_image
+                          FROM SAC_POST sp
+                                   LEFT JOIN (SELECT post_id, COUNT(*) AS reply_count
+                                              FROM sac_reply
+                                              GROUP BY post_id) sr ON sp.post_id = sr.post_id
+                                   LEFT JOIN sac_users su ON sp.user_id = su.user_id
+                          ORDER BY sp.post_id DESC) sr2
+                             LEFT JOIN sac_board sb ON sr2.board_id = sb.board_id) result
+              WHERE result.board_id = #{board_id}) res
                  LEFT JOIN sac_user_like_post sulp ON res.post_id = sulp.post_id
 
     </select>
