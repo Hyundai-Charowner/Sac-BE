@@ -68,7 +68,7 @@ public class PostResponseServiceImpl implements PostResponseService{
 
     @Override
     public Map<String, Object> getPostsByBoardId(long boardId) {
-        List<PostResponseDTO> postsByBoardId = postResponseMapper.getPostByBoardLike(boardId);
+        List<PostResponseDTO> postsByBoardId = postResponseMapper.getPostByBoard(boardId);
 
         if (postsByBoardId == null){
             throw new NullPointerException();
