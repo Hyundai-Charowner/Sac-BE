@@ -5,15 +5,15 @@
 <mapper namespace="site.sac.mapper.ReplyMapper">
     <resultMap id="replyMap" type="java.util.HashMap">
         <result property="reply_content" column="reply_content"/>
-        <result property="user.user_id" column="user_id"/>
+        <result property="user_id" column="user_id"/>
         <result property="board_id" column="board_id"/>
         <result property="post_head" column="post_head"/>
         <result property="post_content" column="post_content"/>
         <result property="created_date" column="created_date"/>
         <result property="post_count" column="post_count"/>
         <result property="post_likes" column="post_likes"/>
-        <result property="user.user_name" column="user_name"/>
-        <result property="user.user_image" column="user_image"/>
+        <result property="user_name" column="user_name"/>
+        <result property="user_image" column="user_image"/>
     </resultMap>
 
     <insert id="insert">
@@ -30,14 +30,10 @@
     </select>
 
     <select id="getAllReplyByUserId" resultMap="replyMap">
-        select sj.reply_content, sj.post_head, sj.post_content, sj.created_date, sj.post_count, sj.post_likes,
-               su.user_name,su.user_image  from
-            (SELECT sr.reply_content, sr.user_id, sp.board_id,
-                    sp.post_head, sp.post_content, sp.created_date, sp.post_count,
-                    sp.post_likes
-             FROM SAC_REPLY sr left join SAC_POST sp
-                on sr.post_id = sp.post_id WHERE sr.user_id = #{user_id}) sj left join sac_users su
-                         on sj.user_id = su.user_id
+        SELECT su.user_image, su.user_name,sj.reply_content, sj.post_id, sj.post_content, sj.created_date, sj.post_count,
+               sj.post_likes FROM ( SELECT sr.reply_content, sp.post_id, sp.post_content, sp.created_date, sp.post_count,sr.user_id,
+                                           sp.post_likes FROM SAC_REPLY sr LEFT JOIN SAC_POST sp ON sr.post_id = sp.post_id WHERE sr.user_id
+                                                                                                                                      = #{user_id} ) sj LEFT JOIN sac_users su ON sj.user_id = su.user_id
     </select>
 
     <delete id="delete">
