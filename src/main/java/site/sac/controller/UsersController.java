@@ -26,7 +26,6 @@ public class UsersController {
 
     @GetMapping("/replies")
     public ResponseEntity<Map<String, Object>> getAllRepliesByUserId(HttpServletRequest request) {
-        log.info("1");
         Map<String, Object> result = replyService.getAllReplyByUserId((long)request.getAttribute("userId"));
         return ResponseEntity.ok().body(result);
     }

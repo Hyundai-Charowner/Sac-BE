@@ -6,10 +6,10 @@ import site.sac.dto.UsersDTO;
 
 
 public interface UsersService {
-    public String register(GoogleOAuthDTO googleOAuthDTO) throws JsonProcessingException;
+    String register(GoogleOAuthDTO googleOAuthDTO) throws JsonProcessingException;
 
-    public boolean isExistToken(String token);
+    boolean isExistToken(String token);
 
-    public long findUserIdByToken(String token);
+    long findUserIdByToken(String token);
     UsersDTO userInfo(long user_id);
 }

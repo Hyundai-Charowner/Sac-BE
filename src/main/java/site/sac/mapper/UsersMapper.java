@@ -3,8 +3,8 @@ package site.sac.mapper;
 import site.sac.dto.UsersDTO;
 
 public interface UsersMapper {
-    public void insert(UsersDTO users);
-    public Long select(String user_email);
+    void insert(UsersDTO users);
+    Long select(String user_email);
 
     UsersDTO read(long user_id);
 

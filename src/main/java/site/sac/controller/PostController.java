@@ -62,7 +62,6 @@ public class PostController {
 
     @DeleteMapping
     public ResponseEntity<PostDTO> postDelete(RequestEntity<PostDTO> requestEntity, HttpServletRequest request){
-        log.info(requestEntity.toString());
         postService.delete(requestEntity.getBody(), (long)request.getAttribute("userId"));
         return ResponseEntity.status(HttpStatus.OK).build();
     }

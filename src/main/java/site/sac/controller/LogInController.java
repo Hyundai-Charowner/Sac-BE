@@ -21,8 +21,6 @@ public class LogInController {
 
     @PostMapping("/google")
     public ResponseEntity<String> googleLogin(@RequestBody GoogleOAuthDTO googleOAuth) throws JsonProcessingException {
-        log.info(googleOAuth.toString());
-        log.info("===============");
         return ResponseEntity.status(HttpStatus.OK).body(usersService.register(googleOAuth));
     }
 }

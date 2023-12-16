@@ -23,7 +23,6 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         String token = request.getHeader("accessToken");
-        log.info("interceptor");
         if (token == null || !usersService.isExistToken(token)){
             response.setStatus(401);
             return false;

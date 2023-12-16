@@ -30,12 +30,10 @@ public class UsersServiceImpl implements UsersService {
         JWTPayloadDTO payload = stringToJSON(payloadString);
         String token = DigestUtils.sha256Hex(payload.getEmail());
 
-        log.info("token.toString()");
         if (isExistToken(token) == false) {  
             registerUser(payload);
             registerToken(token, usersMapper.select((payload.getEmail())));
         }
-        log.info("-----------");
         return token;
     }
 
@@ -60,10 +58,6 @@ public class UsersServiceImpl implements UsersService {
         String[] chunks = googleOAuth.getCredential().split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
         String payloadString = new String(decoder.decode(chunks[1]));
-
-        log.info(chunks.toString());
-        log.info("-0--------------");
-        log.info(payloadString);
         return payloadString;
     }
 
@@ -71,15 +65,11 @@ public class UsersServiceImpl implements UsersService {
         JWTPayloadDTO payload = null;
         ObjectMapper objectMapper = new ObjectMapper();
         payload = objectMapper.readValue(jsonString, JWTPayloadDTO.class);
-
         return payload;
     }
 
     @Override
     public boolean isExistToken(String token) {
-        if (tokenMapper.select(token) == null){
-            log.info("왜이래");
-        } else log.info("왜이러냐고");
         return tokenMapper.select(token) != null;
     }
 
@@ -90,7 +80,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public UsersDTO userInfo(long user_id) {
-        UsersDTO users = usersMapper.read(user_id);
-        return users;
+        UsersDTO usersDTO = usersMapper.read(user_id);
+        return usersDTO;
     }
 }

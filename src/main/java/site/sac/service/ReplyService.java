@@ -9,7 +9,6 @@ public interface ReplyService {
 
     void replyDelete(ReplyDTO replyDTO,long userId);
 
-    ReplyDTO replyRead(long replyId);
 
     Map<String, Object> getAllReplyByPostId(long postId);
 

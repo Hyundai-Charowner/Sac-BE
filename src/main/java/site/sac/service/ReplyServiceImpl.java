@@ -27,11 +27,6 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public ReplyDTO replyRead(long replyId) {
-        return replyMapper.read(replyId);
-    }
-
-    @Override
     public Map<String, Object> getAllReplyByPostId(long postId) {
         List<ReplyResponseDTO> replies = replyResponseMapper.getAllReply(postId);
 

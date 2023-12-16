@@ -1,11 +1,9 @@
 package site.sac;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -24,10 +22,7 @@ class PostMapperTest {
     @Autowired
     private UserLikeBoardMapper userLikeBoardMapper;
 
-    @BeforeEach
-    void setUp() {
-        log.info("되나");
-    }
+
     @DisplayName("Post_insert")
     @Test
     void testInsert() {
@@ -38,7 +33,7 @@ class PostMapperTest {
         postDTO.setPost_content("2222222222222 집이요142");
         System.out.println(postDTO);
         postMapper.insert(postDTO);
-        log.info("되는지좀 알려줘요");
+
     }
     @DisplayName("Post_read")
     @Test

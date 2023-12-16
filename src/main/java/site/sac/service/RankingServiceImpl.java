@@ -22,7 +22,6 @@ public class RankingServiceImpl implements RankingService{
 
     @Override
     public Map<String, Object> getPassionRanking() {
-        log.info("---");
         List<Map<String,Object>> list = rankingMapper.rankPassion();
         Map<String, Object> result = new HashMap<>();
         result.put("user", list);

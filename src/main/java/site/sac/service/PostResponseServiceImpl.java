@@ -57,7 +57,6 @@ public class PostResponseServiceImpl implements PostResponseService{
                     return reply;
                 })
                 .collect(Collectors.toList());
-        log.info(replies.toString());
         postMapper.countUp(postId);
 
         Map<String,Object> result = new HashMap<>();
